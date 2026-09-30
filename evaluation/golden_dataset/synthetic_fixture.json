@@ -1,0 +1,23 @@
+{
+  "document_id": "synthetic-do-001",
+  "source_file": "synthetic_do.pdf",
+  "policy_type": "D&O",
+  "reviewer": "TEST_FIXTURE_ONLY",
+  "annotations": [
+    {
+      "field": "policy_number",
+      "expected": "DO-001",
+      "source_page": 1,
+      "source_excerpt": "Apólice DO-001"
+    },
+    {
+      "field": "currency",
+      "expected": "BRL",
+      "source_page": 1,
+      "source_excerpt": "BRL"
+    }
+  ],
+  "notes": [
+    "Synthetic fixture for evaluator unit tests only."
+  ]
+}

@@ -1,0 +1,214 @@
+[
+  {
+    "pair": 0,
+    "purpose": "Documento de 254 páginas (orçamento de entrada) e ramos diferentes",
+    "a": "04_chubb_empresarial_pme_condicoes_gerais.pdf",
+    "b": "02_bb_residencial_condicoes_gerais.pdf",
+    "run_id": "66838311-6a6f-4fc3-b910-ddd62a603cb4",
+    "status": "COMPLETED",
+    "seconds": 191.9,
+    "errors": [],
+    "comparison_fields": 116,
+    "checks": [
+      {
+        "check": "run não termina em FAILED",
+        "ok": true,
+        "detail": "COMPLETED"
+      },
+      {
+        "check": "ramo identificado",
+        "ok": false,
+        "detail": "('empresarial', 'outro')"
+      },
+      {
+        "check": "escopo sinalizado como genérico",
+        "ok": true,
+        "detail": "Genérico (fora do escopo validado)"
+      },
+      {
+        "check": "aviso de ramo fora do escopo",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "Side A/B/C não aplicável",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese sem linguagem de veredito",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese gerada por IA",
+        "ok": true,
+        "detail": "generative (gpt-5.6-luna)"
+      },
+      {
+        "check": "omissão de páginas declarada (04_chubb_empresarial_pme_condi)",
+        "ok": true,
+        "detail": ""
+      }
+    ],
+    "passed": false
+  },
+  {
+    "pair": 1,
+    "purpose": "Mesmo ramo, condições gerais × apólice emitida com valores (gabarito)",
+    "a": "02_bb_residencial_condicoes_gerais.pdf",
+    "b": "synthetic_apolice_residencial.pdf",
+    "run_id": "f14793e3-5e7c-4eff-a4b6-0460c78f637c",
+    "status": "COMPLETED",
+    "seconds": 113.9,
+    "errors": [],
+    "comparison_fields": 61,
+    "checks": [
+      {
+        "check": "run não termina em FAILED",
+        "ok": true,
+        "detail": "COMPLETED"
+      },
+      {
+        "check": "ramo identificado",
+        "ok": false,
+        "detail": "('outro', 'residencial')"
+      },
+      {
+        "check": "escopo sinalizado como genérico",
+        "ok": true,
+        "detail": "Genérico (fora do escopo validado)"
+      },
+      {
+        "check": "aviso de ramo fora do escopo",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "Side A/B/C não aplicável",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese sem linguagem de veredito",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese gerada por IA",
+        "ok": true,
+        "detail": "generative (gpt-5.6-luna)"
+      },
+      {
+        "check": "sintética: seguradora",
+        "ok": true,
+        "detail": "Horizonte Proteção S.A."
+      },
+      {
+        "check": "sintética: número da apólice",
+        "ok": true,
+        "detail": "HP-RES-2026-000184"
+      },
+      {
+        "check": "sintética: segurado",
+        "ok": true,
+        "detail": "Marina Alves de Souza"
+      },
+      {
+        "check": "sintética: início de vigência",
+        "ok": true,
+        "detail": "2026-10-01"
+      },
+      {
+        "check": "sintética: fim de vigência",
+        "ok": true,
+        "detail": "2027-09-30"
+      },
+      {
+        "check": "sintética: limite 'Incêndio, explosão e fumaça'",
+        "ok": true,
+        "detail": "300000.0"
+      },
+      {
+        "check": "sintética: limite 'Danos elétricos'",
+        "ok": true,
+        "detail": "25000.0"
+      },
+      {
+        "check": "sintética: franquia 'Danos elétricos'",
+        "ok": true,
+        "detail": "500.0"
+      },
+      {
+        "check": "sintética: limite 'Roubo ou furto qualificado de bens'",
+        "ok": true,
+        "detail": "40000.0"
+      },
+      {
+        "check": "sintética: franquia 'Roubo ou furto qualificado de bens'",
+        "ok": true,
+        "detail": "750.0"
+      },
+      {
+        "check": "sintética: limite 'Responsabilidade civil familiar'",
+        "ok": true,
+        "detail": "50000.0"
+      },
+      {
+        "check": "sintética: limite 'Assistência residencial 24 horas'",
+        "ok": false,
+        "detail": "None"
+      }
+    ],
+    "passed": false
+  },
+  {
+    "pair": 2,
+    "purpose": "Apólice emitida real × condições de vida (controle negativo D&O)",
+    "a": "06_apolice_seguro_garantia_publica.pdf",
+    "b": "05_banrisul_vida_digital_condicoes_contratuais.pdf",
+    "run_id": "0aade81e-15a3-466c-8787-c601edb6bacc",
+    "status": "COMPLETED",
+    "seconds": 114.5,
+    "errors": [],
+    "comparison_fields": 70,
+    "checks": [
+      {
+        "check": "run não termina em FAILED",
+        "ok": true,
+        "detail": "COMPLETED"
+      },
+      {
+        "check": "ramo identificado",
+        "ok": false,
+        "detail": "('outro', 'vida')"
+      },
+      {
+        "check": "escopo sinalizado como genérico",
+        "ok": true,
+        "detail": "Genérico (fora do escopo validado)"
+      },
+      {
+        "check": "aviso de ramo fora do escopo",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "Side A/B/C não aplicável",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese sem linguagem de veredito",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese gerada por IA",
+        "ok": true,
+        "detail": "generative (gpt-5.6-luna)"
+      }
+    ],
+    "passed": false
+  }
+]

@@ -1,0 +1,69 @@
+{
+  "dataset_version": "Golden Dataset Annotation v1.1",
+  "policy_a": "GD01-CHUBB",
+  "policy_b": "GD02-SOMPO",
+  "comparisons": [
+    {
+      "field": "policy_type",
+      "expected_status": "EQUAL",
+      "rationale": "Both are D&O contractual conditions."
+    },
+    {
+      "field": "policy_number",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Neither document is an issued policy specification."
+    },
+    {
+      "field": "effective_date",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete dates are delegated to Specification."
+    },
+    {
+      "field": "expiration_date",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete dates are delegated to Specification."
+    },
+    {
+      "field": "limit_of_liability",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete monetary limit is delegated to Specification."
+    },
+    {
+      "field": "retroactive_date",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete date is delegated to Specification."
+    },
+    {
+      "field": "territorial_scope",
+      "expected_status": "EQUAL",
+      "rationale": "Worldwide unless Specification provides otherwise."
+    },
+    {
+      "field": "retention_rule",
+      "expected_status": "DIFFERENT",
+      "rationale": "Sompo explicitly waives deductible for Coverage A; Chubb states deductible may apply per Specification."
+    },
+    {
+      "field": "exclusion.environmental_damage",
+      "expected_status": "DIFFERENT",
+      "rationale": "Ambas excluem danos ambientais (Chubb 7.2.1, p. 14; Sompo 4.1.5, p. 16), mas a Chubb prevê cobertura adicional de dano ambiental que afasta a exclusão quando contratada (p. 42 e p. 51–55, com regras próprias para limpeza/despoluição e EUA/Canadá). A Sompo não prevê recompra equivalente. Alcance distinto.",
+      "previous_status_v1_0": "EQUAL"
+    },
+    {
+      "field": "exclusion.cyber",
+      "expected_status": "DIFFERENT",
+      "rationale": "Chubb: cláusula específica exclui reclamações por perda de dados em consequência de evento cibernético (p. 65). Sompo 4.1.16: exclui incidentes e/ou ataques cibernéticos e qualquer malware, salvo disposição em contrário (p. 17). O texto das duas cláusulas é suficiente para constatar alcance distinto; não depende de contexto adicional.",
+      "previous_status_v1_0": "REVIEW_REQUIRED"
+    }
+  ],
+  "revision": {
+    "date": "2026-09-30",
+    "based_on": "GD01_GD02_expected_comparison.json (v1.0, preservado sem alteração)",
+    "approved_by": "Revisor humano do projeto (especialista), em 2026-09-30",
+    "reason": "A v1.0 anotava exclusões pela presença do tema. A v1.1 anota pelo alcance contratual, critério usado pelo A5. A revisão foi motivada por divergências apontadas pelo sistema e confirmada pelo revisor diretamente no texto dos PDFs; por isso EVAL-04 sobre v1.1 deve ser reportada junto com o resultado sobre v1.0.",
+    "changed_fields": [
+      "exclusion.environmental_damage",
+      "exclusion.cyber"
+    ]
+  }
+}

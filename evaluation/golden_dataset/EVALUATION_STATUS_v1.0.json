@@ -1,0 +1,25 @@
+{
+  "dataset": "Golden Dataset Annotation v1.0",
+  "GD01": "ANNOTATED_FROM_OFFICIAL_PDF",
+  "GD02": "ANNOTATED_FROM_OFFICIAL_PDF",
+  "EVAL-02": {
+    "status": "NOT_EXECUTED_AS_EMPIRICAL_METRIC",
+    "reason": "M6 contains only provider-neutral StructuredLLMClient protocol plus deterministic/demo test clients; no live GenAI provider adapter is implemented. Running the heuristic or a hand-authored response would not be a genuine A3 extraction evaluation."
+  },
+  "EVAL-03": {
+    "status": "NOT_EXECUTED_AS_EMPIRICAL_METRIC",
+    "reason": "Same A3 limitation; Claim→Evidence cannot be scored honestly until a live A3 output exists."
+  },
+  "EVAL-04": {
+    "status": "EXECUTED",
+    "scope": "A5 deterministic comparison on human-curated PolicySchema representations of GD01/GD02.",
+    "score": 1.0,
+    "correct": 9,
+    "checked": 9
+  },
+  "architecture_changed": false,
+  "agents_changed": false,
+  "live_provider_adapter_present": false,
+  "provider_credential_detected": false,
+  "methodological_decision": "Do not fabricate EVAL-02/EVAL-03 by using synthetic fixtures, DemoHeuristicLLMClient, or the Ground Truth itself as model output."
+}

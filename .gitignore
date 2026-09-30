@@ -1,0 +1,14 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.db
+logs/*.jsonl
+data/uploads/*
+data/runs/
+data/ocr_test/
+.DS_Store
+venv/
+*.zip
+data/uploads/

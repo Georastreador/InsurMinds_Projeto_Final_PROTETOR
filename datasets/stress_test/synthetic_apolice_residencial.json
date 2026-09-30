@@ -1,0 +1,39 @@
+{
+  "tipo_documento": "apolice_individual",
+  "ramo": "residencial",
+  "seguradora": "Horizonte Proteção S.A.",
+  "produto": "Residencial Essencial Plus",
+  "cnpj_seguradora": "12.345.678/0001-90",
+  "processo_susep": "15414.900000/2026-11",
+  "numero_apolice": "HP-RES-2026-000184",
+  "proposta": "PROP-2026-009771",
+  "segurado": {
+    "nome": "Marina Alves de Souza",
+    "cpf": "123.456.789-00",
+    "endereco_risco": "Rua das Acácias, 145, apto. 802, Campinas/SP, CEP 13000-000",
+    "tipo_imovel": "Apartamento residencial habitual",
+    "construcao": "Alvenaria"
+  },
+  "vigencia": {
+    "inicio": "2026-10-01T00:00:00",
+    "fim": "2027-09-30T24:00:00"
+  },
+  "premio": {
+    "total": 1248.60,
+    "parcelas": 12,
+    "valor_parcela": 104.05,
+    "moeda": "BRL"
+  },
+  "coberturas": [
+    {"nome": "Incêndio, explosão e fumaça", "limite": 300000.00, "franquia": null},
+    {"nome": "Danos elétricos", "limite": 25000.00, "franquia": 500.00},
+    {"nome": "Roubo ou furto qualificado de bens", "limite": 40000.00, "franquia": 750.00},
+    {"nome": "Responsabilidade civil familiar", "limite": 50000.00, "franquia": null},
+    {"nome": "Assistência residencial 24 horas", "limite": "4 eventos por vigência", "franquia": null}
+  ],
+  "exclusoes_principais": ["guerra", "atos de terrorismo", "desgaste natural", "falta de manutenção", "defeito de fabricação", "ato doloso do segurado", "bens mantidos em área externa descoberta", "valores em espécie"],
+  "prazo_comunicacao_sinistro_dias_uteis": 5,
+  "prazo_regulacao_apos_documentos_dias": 30,
+  "beneficiario_indicado": false,
+  "documento_sintetico": true
+}

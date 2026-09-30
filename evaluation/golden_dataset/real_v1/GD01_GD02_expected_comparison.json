@@ -1,0 +1,57 @@
+{
+  "dataset_version": "Golden Dataset Annotation v1.0",
+  "policy_a": "GD01-CHUBB",
+  "policy_b": "GD02-SOMPO",
+  "comparisons": [
+    {
+      "field": "policy_type",
+      "expected_status": "EQUAL",
+      "rationale": "Both are D&O contractual conditions."
+    },
+    {
+      "field": "policy_number",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Neither document is an issued policy specification."
+    },
+    {
+      "field": "effective_date",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete dates are delegated to Specification."
+    },
+    {
+      "field": "expiration_date",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete dates are delegated to Specification."
+    },
+    {
+      "field": "limit_of_liability",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete monetary limit is delegated to Specification."
+    },
+    {
+      "field": "retroactive_date",
+      "expected_status": "NOT_IDENTIFIED",
+      "rationale": "Concrete date is delegated to Specification."
+    },
+    {
+      "field": "territorial_scope",
+      "expected_status": "EQUAL",
+      "rationale": "Worldwide unless Specification provides otherwise."
+    },
+    {
+      "field": "retention_rule",
+      "expected_status": "DIFFERENT",
+      "rationale": "Sompo explicitly waives deductible for Coverage A; Chubb states deductible may apply per Specification."
+    },
+    {
+      "field": "exclusion.environmental_damage",
+      "expected_status": "EQUAL",
+      "rationale": "Both general conditions exclude environmental/pollution risk, subject to other contractual provisions."
+    },
+    {
+      "field": "exclusion.cyber",
+      "expected_status": "REVIEW_REQUIRED",
+      "rationale": "Sompo general exclusion identified; Chubb has a specific cyber exclusion clause later in contractual conditions, requiring semantic/context review."
+    }
+  ]
+}

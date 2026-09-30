@@ -1,0 +1,20 @@
+{
+  "milestone": "M6",
+  "version": "1.0",
+  "new_agents": 0,
+  "quality_components": [
+    "Golden Dataset contract",
+    "EVAL-01 Schema Validity",
+    "EVAL-02 Field Extraction Accuracy",
+    "EVAL-03 Evidence Grounding",
+    "EVAL-04 Comparison Accuracy",
+    "EVAL-05 Unsupported-Claim lexical proxy",
+    "Consolidated observability report",
+    "M1-M6 regression suite"
+  ],
+  "methodology": {
+    "golden_dataset": "Requires human annotation for empirical D&O metrics.",
+    "non_do_documents": "Test/Stress Dataset only; excluded from D&O semantic metrics.",
+    "eval_05": "Lexical proxy; not proof of semantic grounding or absence of hallucination."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "dataset": "Golden Dataset Annotation v1.1 (comparação) / v1.0 (campos)",
+  "date": "2026-09-30",
+  "supersedes": "EVALUATION_STATUS_v1.0.json (mantido para histórico)",
+  "live_provider_adapter_present": true,
+  "live_runs_executed": true,
+  "model": "gpt-5.6-luna",
+  "command": "python -m evaluation.run_live_golden --live",
+  "reference_run": "evaluation/results/LIVE_GD01_GD02_20260930_164508.json",
+  "results_reference_run": {
+    "EVAL-01": "1.00 / 1.00 (Chubb / Sompo)",
+    "EVAL-02": "1.00 (12/12) / 1.00 (11/11) — 5 anotações fora do schema excluídas do denominador",
+    "EVAL-03": "1.00 (6/6) / 1.00 (5/5) — critério: página citada; trecho literal coincide em parte",
+    "EVAL-04 (gabarito v1.0)": "0.80 (8/10)",
+    "EVAL-04 (gabarito v1.1)": "1.00 (10/10)",
+    "EVAL-05": "1.00 / 1.00 (proxy lexical)"
+  },
+  "evolution_EVAL-04_v1.0": {
+    "A5 v1 (nomes do LLM)": 0.5,
+    "A5 v2 (taxonomia + juiz LLM)": 0.8
+  },
+  "limitations": [
+    "Amostra pequena (2 documentos, 10 itens de comparação); condições gerais, não apólices emitidas.",
+    "A revisão v1.1 do gabarito foi motivada por divergências apontadas pelo sistema e confirmada no texto-fonte pelo revisor; reportar v1.0 e v1.1 juntos.",
+    "Há variação entre execuções do LLM; repetir o run e reportar média e pior caso.",
+    "Regras de mapeamento conceito→schema (golden_resolvers.py) escritas após o run 1; run 2 confirmou com regras congeladas."
+  ]
+}

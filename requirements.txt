@@ -1,0 +1,10 @@
+pydantic>=2.7,<3
+pytest>=8,<10
+PyMuPDF>=1.24,<2
+markdown>=3.5,<4
+
+streamlit>=1.38,<2
+pandas>=2.2,<3
+
+openai>=2.0,<3
+python-dotenv>=1.0,<2

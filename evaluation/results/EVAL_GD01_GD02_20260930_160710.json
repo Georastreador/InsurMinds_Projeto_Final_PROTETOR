@@ -1,0 +1,481 @@
+{
+  "generated_at": "2026-09-30T19:08:44.817146+00:00",
+  "run_id": "38aa221f-4175-479c-b399-0be3b9bfc9d1",
+  "run_status": "COMPLETED",
+  "model": "gpt-5.6-luna",
+  "evaluations": [
+    {
+      "eval_id": "EVAL-01",
+      "name": "Schema validity",
+      "score": 1.0,
+      "passed": true,
+      "numerator": 1,
+      "denominator": 1,
+      "details": {},
+      "limitations": []
+    },
+    {
+      "eval_id": "EVAL-01",
+      "name": "Schema validity",
+      "score": 1.0,
+      "passed": true,
+      "numerator": 1,
+      "denominator": 1,
+      "details": {},
+      "limitations": []
+    },
+    {
+      "eval_id": "EVAL-02",
+      "name": "Field extraction accuracy (GD01-CHUBB)",
+      "score": 1.0,
+      "passed": true,
+      "numerator": 12,
+      "denominator": 12,
+      "details": {
+        "fields": [
+          {
+            "field": "policy_type",
+            "expected": "D&O",
+            "actual": "D&O",
+            "correct": true
+          },
+          {
+            "field": "policy_number",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "insured_entity",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "effective_date",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "expiration_date",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "limit_of_liability",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "retroactive_date",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "territorial_scope",
+            "expected": "WORLDWIDE_UNLESS_SPECIFIED",
+            "actual": "WORLDWIDE_UNLESS_SPECIFIED",
+            "correct": true
+          },
+          {
+            "field": "insuring_agreements.A.present",
+            "expected": true,
+            "actual": true,
+            "correct": true
+          },
+          {
+            "field": "insuring_agreements.B.present",
+            "expected": true,
+            "actual": true,
+            "correct": true
+          },
+          {
+            "field": "exclusion.environmental_damage",
+            "expected": true,
+            "actual": true,
+            "correct": true
+          },
+          {
+            "field": "exclusion.fines_penalties",
+            "expected": true,
+            "actual": true,
+            "correct": true
+          }
+        ],
+        "out_of_schema_fields": [
+          "retention_rule",
+          "defense_costs"
+        ]
+      },
+      "limitations": [
+        "Concept annotations are mapped by the deterministic rules in golden_resolvers.py.",
+        "OUT_OF_SCHEMA annotations are excluded from the denominator and require human review."
+      ]
+    },
+    {
+      "eval_id": "EVAL-02",
+      "name": "Field extraction accuracy (GD02-SOMPO)",
+      "score": 1.0,
+      "passed": true,
+      "numerator": 11,
+      "denominator": 11,
+      "details": {
+        "fields": [
+          {
+            "field": "policy_type",
+            "expected": "D&O",
+            "actual": "D&O",
+            "correct": true
+          },
+          {
+            "field": "policy_number",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "insured_entity",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "effective_date",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "expiration_date",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "limit_of_liability",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "retroactive_date",
+            "expected": null,
+            "actual": null,
+            "correct": true
+          },
+          {
+            "field": "territorial_scope",
+            "expected": "WORLDWIDE_UNLESS_SPECIFIED",
+            "actual": "WORLDWIDE_UNLESS_SPECIFIED",
+            "correct": true
+          },
+          {
+            "field": "exclusion.cyber",
+            "expected": true,
+            "actual": true,
+            "correct": true
+          },
+          {
+            "field": "exclusion.pollution",
+            "expected": true,
+            "actual": true,
+            "correct": true
+          },
+          {
+            "field": "exclusion.professional_liability",
+            "expected": true,
+            "actual": true,
+            "correct": true
+          }
+        ],
+        "out_of_schema_fields": [
+          "claims_basis",
+          "retention.coverage_A",
+          "retention.other"
+        ]
+      },
+      "limitations": [
+        "Concept annotations are mapped by the deterministic rules in golden_resolvers.py.",
+        "OUT_OF_SCHEMA annotations are excluded from the denominator and require human review."
+      ]
+    },
+    {
+      "eval_id": "EVAL-03",
+      "name": "Evidence grounding (GD01-CHUBB)",
+      "score": 1.0,
+      "passed": true,
+      "numerator": 6,
+      "denominator": 6,
+      "details": {
+        "fields": [
+          {
+            "field": "policy_type",
+            "gold_page": 4,
+            "cited_pages": [
+              4
+            ],
+            "page_match": true,
+            "excerpt_match": false
+          },
+          {
+            "field": "territorial_scope",
+            "gold_page": 15,
+            "cited_pages": [
+              15
+            ],
+            "page_match": true,
+            "excerpt_match": true
+          },
+          {
+            "field": "insuring_agreements.A.present",
+            "gold_page": 34,
+            "cited_pages": [
+              34
+            ],
+            "page_match": true,
+            "excerpt_match": false
+          },
+          {
+            "field": "insuring_agreements.B.present",
+            "gold_page": 34,
+            "cited_pages": [
+              34
+            ],
+            "page_match": true,
+            "excerpt_match": false
+          },
+          {
+            "field": "exclusion.environmental_damage",
+            "gold_page": 14,
+            "cited_pages": [
+              14
+            ],
+            "page_match": true,
+            "excerpt_match": true
+          },
+          {
+            "field": "exclusion.fines_penalties",
+            "gold_page": 14,
+            "cited_pages": [
+              14
+            ],
+            "page_match": true,
+            "excerpt_match": true
+          }
+        ],
+        "excerpt_match_rate": 0.5
+      },
+      "limitations": [
+        "Primary criterion: the evidence attached to the extracted fact cites the page cited by the human annotator.",
+        "Secondary (details.excerpt_match_rate): verbatim overlap with the annotated excerpt."
+      ]
+    },
+    {
+      "eval_id": "EVAL-03",
+      "name": "Evidence grounding (GD02-SOMPO)",
+      "score": 1.0,
+      "passed": true,
+      "numerator": 5,
+      "denominator": 5,
+      "details": {
+        "fields": [
+          {
+            "field": "policy_type",
+            "gold_page": 1,
+            "cited_pages": [
+              1
+            ],
+            "page_match": true,
+            "excerpt_match": true
+          },
+          {
+            "field": "territorial_scope",
+            "gold_page": 17,
+            "cited_pages": [
+              17
+            ],
+            "page_match": true,
+            "excerpt_match": false
+          },
+          {
+            "field": "exclusion.cyber",
+            "gold_page": 17,
+            "cited_pages": [
+              17
+            ],
+            "page_match": true,
+            "excerpt_match": false
+          },
+          {
+            "field": "exclusion.pollution",
+            "gold_page": 16,
+            "cited_pages": [
+              16
+            ],
+            "page_match": true,
+            "excerpt_match": true
+          },
+          {
+            "field": "exclusion.professional_liability",
+            "gold_page": 16,
+            "cited_pages": [
+              16
+            ],
+            "page_match": true,
+            "excerpt_match": false
+          }
+        ],
+        "excerpt_match_rate": 0.4
+      },
+      "limitations": [
+        "Primary criterion: the evidence attached to the extracted fact cites the page cited by the human annotator.",
+        "Secondary (details.excerpt_match_rate): verbatim overlap with the annotated excerpt."
+      ]
+    },
+    {
+      "eval_id": "EVAL-04",
+      "name": "Comparison accuracy (end-to-end LIVE)",
+      "score": 0.5,
+      "passed": false,
+      "numerator": 5,
+      "denominator": 10,
+      "details": {
+        "fields": [
+          {
+            "field": "policy_type",
+            "expected": "EQUAL",
+            "actual": "DIFFERENT",
+            "a5_fields": [
+              "policy_type"
+            ],
+            "correct": false
+          },
+          {
+            "field": "policy_number",
+            "expected": "NOT_IDENTIFIED",
+            "actual": "NOT_IDENTIFIED",
+            "a5_fields": [
+              "policy_number"
+            ],
+            "correct": true
+          },
+          {
+            "field": "effective_date",
+            "expected": "NOT_IDENTIFIED",
+            "actual": "NOT_IDENTIFIED",
+            "a5_fields": [
+              "effective_date"
+            ],
+            "correct": true
+          },
+          {
+            "field": "expiration_date",
+            "expected": "NOT_IDENTIFIED",
+            "actual": "NOT_IDENTIFIED",
+            "a5_fields": [
+              "expiration_date"
+            ],
+            "correct": true
+          },
+          {
+            "field": "limit_of_liability",
+            "expected": "NOT_IDENTIFIED",
+            "actual": "NOT_IDENTIFIED",
+            "a5_fields": [
+              "limit_of_liability"
+            ],
+            "correct": true
+          },
+          {
+            "field": "retroactive_date",
+            "expected": "NOT_IDENTIFIED",
+            "actual": "NOT_IDENTIFIED",
+            "a5_fields": [
+              "retroactive_date"
+            ],
+            "correct": true
+          },
+          {
+            "field": "territorial_scope",
+            "expected": "EQUAL",
+            "actual": "DIFFERENT",
+            "a5_fields": [
+              "territorial_scope"
+            ],
+            "correct": false
+          },
+          {
+            "field": "retention_rule",
+            "expected": "DIFFERENT",
+            "actual": "NOT_PRODUCED",
+            "a5_fields": [],
+            "correct": false
+          },
+          {
+            "field": "exclusion.environmental_damage",
+            "expected": "EQUAL",
+            "actual": "UNPAIRED(ONLY_A+ONLY_B)",
+            "a5_fields": [
+              "exclusions:environmental damage",
+              "exclusions:pollution"
+            ],
+            "correct": false
+          },
+          {
+            "field": "exclusion.cyber",
+            "expected": "REVIEW_REQUIRED",
+            "actual": "UNPAIRED(ONLY_A+ONLY_B)",
+            "a5_fields": [
+              "exclusions:cyber risks",
+              "exclusions:cyber_liability"
+            ],
+            "correct": false
+          }
+        ]
+      },
+      "limitations": [
+        "Measured on A5 output from a real LIVE run, not on curated representations."
+      ]
+    },
+    {
+      "eval_id": "EVAL-05",
+      "name": "Unsupported-claim lexical proxy",
+      "score": 1.0,
+      "passed": true,
+      "numerator": 0,
+      "denominator": 0,
+      "details": {
+        "unsupported_proxy_claims": []
+      },
+      "limitations": [
+        "Lexical proxy only; it is not proof of semantic grounding or absence of hallucination.",
+        "Formatting and normalization differences can produce false negatives."
+      ]
+    },
+    {
+      "eval_id": "EVAL-05",
+      "name": "Unsupported-claim lexical proxy",
+      "score": 0.5,
+      "passed": false,
+      "numerator": 1,
+      "denominator": 2,
+      "details": {
+        "unsupported_proxy_claims": [
+          {
+            "field": "currency",
+            "value": "BRL"
+          }
+        ]
+      },
+      "limitations": [
+        "Lexical proxy only; it is not proof of semantic grounding or absence of hallucination.",
+        "Formatting and normalization differences can produce false negatives."
+      ]
+    }
+  ],
+  "methodological_note": "End-to-end LIVE evaluation on public D&O general conditions (Chubb, Sompo) against human annotations. EVAL-05 is a lexical proxy."
+}

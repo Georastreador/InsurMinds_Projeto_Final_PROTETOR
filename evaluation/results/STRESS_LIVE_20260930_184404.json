@@ -1,0 +1,181 @@
+[
+  {
+    "pair": 3,
+    "purpose": "OCR: PDF digitalizado (só imagem) × mesmo documento em PDF nativo (gabarito)",
+    "a": "synthetic_apolice_residencial_digitalizada.pdf",
+    "b": "synthetic_apolice_residencial.pdf",
+    "run_id": "9728711f-f09c-4bcf-ba5b-6ab08b891de9",
+    "status": "COMPLETED",
+    "seconds": 100.3,
+    "errors": [],
+    "comparison_fields": 38,
+    "checks": [
+      {
+        "check": "run não termina em FAILED",
+        "ok": true,
+        "detail": "COMPLETED"
+      },
+      {
+        "check": "ramo identificado",
+        "ok": true,
+        "detail": "('residencial', 'residencial')"
+      },
+      {
+        "check": "escopo sinalizado como genérico",
+        "ok": true,
+        "detail": "Genérico (fora do escopo validado)"
+      },
+      {
+        "check": "aviso de ramo fora do escopo",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "Side A/B/C não aplicável",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese sem linguagem de veredito",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "check": "síntese gerada por IA",
+        "ok": true,
+        "detail": "generative (gpt-5.6-luna)"
+      },
+      {
+        "check": "sintética: seguradora [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "Horizonte Proteção S.A."
+      },
+      {
+        "check": "sintética: número da apólice [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "HP-RES-2026-000184"
+      },
+      {
+        "check": "sintética: segurado [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "Marina Alves de Souza"
+      },
+      {
+        "check": "sintética: início de vigência [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "2026-10-01"
+      },
+      {
+        "check": "sintética: fim de vigência [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "2027-09-30"
+      },
+      {
+        "check": "sintética: limite 'Incêndio, explosão e fumaça' [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "300000.0"
+      },
+      {
+        "check": "sintética: limite 'Danos elétricos' [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "25000.0"
+      },
+      {
+        "check": "sintética: franquia 'Danos elétricos' [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "500.0"
+      },
+      {
+        "check": "sintética: limite 'Roubo ou furto qualificado de bens' [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "40000.0"
+      },
+      {
+        "check": "sintética: franquia 'Roubo ou furto qualificado de bens' [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "750.0"
+      },
+      {
+        "check": "sintética: limite 'Responsabilidade civil familiar' [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "50000.0"
+      },
+      {
+        "check": "sintética: limite não monetário 'Assistência residencial 24 horas' sem valor inventado [synthetic_apolice_residencial_digitaliza]",
+        "ok": true,
+        "detail": "None"
+      },
+      {
+        "check": "sintética: seguradora [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "Horizonte Proteção S.A."
+      },
+      {
+        "check": "sintética: número da apólice [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "HP-RES-2026-000184"
+      },
+      {
+        "check": "sintética: segurado [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "Marina Alves de Souza"
+      },
+      {
+        "check": "sintética: início de vigência [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "2026-10-01"
+      },
+      {
+        "check": "sintética: fim de vigência [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "2027-09-30"
+      },
+      {
+        "check": "sintética: limite 'Incêndio, explosão e fumaça' [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "300000.0"
+      },
+      {
+        "check": "sintética: limite 'Danos elétricos' [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "25000.0"
+      },
+      {
+        "check": "sintética: franquia 'Danos elétricos' [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "500.0"
+      },
+      {
+        "check": "sintética: limite 'Roubo ou furto qualificado de bens' [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "40000.0"
+      },
+      {
+        "check": "sintética: franquia 'Roubo ou furto qualificado de bens' [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "750.0"
+      },
+      {
+        "check": "sintética: limite 'Responsabilidade civil familiar' [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "50000.0"
+      },
+      {
+        "check": "sintética: limite não monetário 'Assistência residencial 24 horas' sem valor inventado [synthetic_apolice_residencial.pdf]",
+        "ok": true,
+        "detail": "None"
+      },
+      {
+        "check": "extração por OCR (synthetic_apolice_residencial_digitaliza)",
+        "ok": true,
+        "detail": "OCR_GPT"
+      },
+      {
+        "check": "OCR × nativo: identificação e vigência iguais",
+        "ok": true,
+        "detail": "{'policy_number': 'EQUAL', 'insurer': 'EQUAL', 'insured_entity': 'EQUAL', 'effective_date': 'EQUAL', 'expiration_date': 'EQUAL'}"
+      }
+    ],
+    "passed": true
+  }
+]
