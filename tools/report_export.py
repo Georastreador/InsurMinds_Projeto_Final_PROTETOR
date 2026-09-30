@@ -43,14 +43,21 @@ h3 { font-size: 11pt; color: #0b3d62; margin-top: 8pt; }
 """
 
 
-def markdown_to_pdf(text: str, title: str, header: Optional[str] = None, css: str = _CSS + TABLE_CSS) -> bytes:
-    """Render Markdown (headings, lists, tables, emphasis) to an A4 PDF with page numbers."""
+def markdown_to_pdf(text: str, title: str, header: Optional[str] = None, css: str = _CSS + TABLE_CSS,
+                    base_dir: Optional[str] = None) -> bytes:
+    """Render Markdown (headings, lists, tables, emphasis, images) to an A4 PDF with page numbers.
+
+    Images are resolved relative to base_dir.
+    """
     body = markdown.markdown(text, extensions=["sane_lists", "tables"])
+    # Story ignores CSS widths on images: set the width attribute to the full text column (A4 minus margins).
+    body = body.replace("<img ", '<img width="495" ')
     page_html = (f'<p class="meta">{html.escape(header)}</p>' if header else "") + body
 
     buffer = io.BytesIO()
     writer = pymupdf.DocumentWriter(buffer)
-    story = pymupdf.Story(html=page_html, user_css=css)
+    archive = pymupdf.Archive(base_dir) if base_dir else None
+    story = pymupdf.Story(html=page_html, user_css=css, archive=archive)
     page_rect = pymupdf.paper_rect("a4")
     content = page_rect + (50, 50, -50, -50)
     more = True

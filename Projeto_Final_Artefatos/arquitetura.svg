@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" width="1000" height="660" font-family="Helvetica">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#44546a"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1000" height="660" fill="#ffffff"/>
+
+  <!-- Upload -->
+  <rect x="300" y="12" width="400" height="44" rx="8" fill="#eef2f6" stroke="#44546a" stroke-width="1.2"/>
+  <text x="500" y="32" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2328">Upload: apólices A e B</text>
+  <text x="500" y="48" text-anchor="middle" font-size="11.5" fill="#44546a">PDF nativo, PDF digitalizado ou imagem (PNG/JPG)</text>
+  <line x1="500" y1="56" x2="500" y2="86" stroke="#44546a" stroke-width="1.6"/>
+
+  <!-- Harness -->
+  <rect x="20" y="90" width="960" height="262" rx="10" fill="#f8fafc" stroke="#0b3d62" stroke-width="1.6" stroke-dasharray="7 4"/>
+  <text x="38" y="114" font-size="14" font-weight="bold" fill="#0b3d62">HARNESS — Orchestrator</text>
+  <text x="230" y="114" font-size="11.5" fill="#44546a">máquina de estados · transições · retries · escopo/ramo · progresso · trace · persistência</text>
+
+  <!-- Agents: determinístico = cinza-azulado; IA generativa = lilás -->
+  <g font-size="11" fill="#1f2328">
+    <rect x="38" y="138" width="138" height="104" rx="8" fill="#e3e9ef" stroke="#8898aa"/>
+    <text x="107" y="160" text-anchor="middle" font-size="14" font-weight="bold">A1 Intake</text>
+    <text x="107" y="182" text-anchor="middle">valida formato,</text>
+    <text x="107" y="197" text-anchor="middle">tamanho e</text>
+    <text x="107" y="212" text-anchor="middle">metadados</text>
+
+    <rect x="194" y="138" width="138" height="104" rx="8" fill="#ece4f7" stroke="#7b5ea7"/>
+    <text x="263" y="160" text-anchor="middle" font-size="14" font-weight="bold">A2 Extraction</text>
+    <text x="263" y="182" text-anchor="middle">texto por página</text>
+    <text x="263" y="197" text-anchor="middle">(PyMuPDF) +</text>
+    <text x="263" y="212" text-anchor="middle">OCR multimodal</text>
+    <text x="263" y="227" text-anchor="middle">nos digitalizados</text>
+
+    <rect x="350" y="138" width="138" height="104" rx="8" fill="#ece4f7" stroke="#7b5ea7"/>
+    <text x="419" y="160" text-anchor="middle" font-size="14" font-weight="bold">A3 Análise D&amp;O</text>
+    <text x="419" y="182" text-anchor="middle">LLM preenche o</text>
+    <text x="419" y="197" text-anchor="middle">PolicySchema</text>
+    <text x="419" y="212" text-anchor="middle">(schema estrito)</text>
+    <text x="419" y="227" text-anchor="middle">com evidências</text>
+
+    <rect x="506" y="138" width="138" height="104" rx="8" fill="#e3e9ef" stroke="#8898aa"/>
+    <text x="575" y="160" text-anchor="middle" font-size="14" font-weight="bold">A4 Validation</text>
+    <text x="575" y="182" text-anchor="middle">Pydantic +</text>
+    <text x="575" y="197" text-anchor="middle">guardrails</text>
+    <text x="575" y="212" text-anchor="middle">(datas, valores,</text>
+    <text x="575" y="227" text-anchor="middle">papéis)</text>
+
+    <rect x="662" y="138" width="138" height="104" rx="8" fill="#ece4f7" stroke="#7b5ea7"/>
+    <text x="731" y="160" text-anchor="middle" font-size="14" font-weight="bold">A5 Comparison</text>
+    <text x="731" y="182" text-anchor="middle">pareia por conceito</text>
+    <text x="731" y="197" text-anchor="middle">(taxonomia D&amp;O);</text>
+    <text x="731" y="212" text-anchor="middle">LLM julga o</text>
+    <text x="731" y="227" text-anchor="middle">conteúdo dos pares</text>
+
+    <rect x="818" y="138" width="138" height="104" rx="8" fill="#ece4f7" stroke="#7b5ea7"/>
+    <text x="887" y="160" text-anchor="middle" font-size="14" font-weight="bold">A6 Synthesis</text>
+    <text x="887" y="182" text-anchor="middle">síntese executiva</text>
+    <text x="887" y="197" text-anchor="middle">só com itens do A5;</text>
+    <text x="887" y="212" text-anchor="middle">páginas anexadas</text>
+    <text x="887" y="227" text-anchor="middle">sem veredito</text>
+  </g>
+  <g stroke="#44546a" stroke-width="1.6">
+    <line x1="176" y1="190" x2="192" y2="190"/>
+    <line x1="332" y1="190" x2="348" y2="190"/>
+    <line x1="488" y1="190" x2="504" y2="190"/>
+    <line x1="644" y1="190" x2="660" y2="190"/>
+    <line x1="800" y1="190" x2="816" y2="190"/>
+  </g>
+  <!-- retry loop A4 -> A3 -->
+  <path d="M 575 242 C 575 290, 419 290, 419 244" fill="none" stroke="#b54708" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <text x="497" y="300" text-anchor="middle" font-size="11" fill="#b54708">validação falhou → nova tentativa com os erros (até 2×)</text>
+  <text x="731" y="275" text-anchor="middle" font-size="11" fill="#44546a">estados: EQUAL · DIFFERENT · ONLY_A/B</text>
+  <text x="731" y="290" text-anchor="middle" font-size="11" fill="#44546a">NOT_IDENTIFIED · REVIEW_REQUIRED</text>
+  <text x="887" y="275" text-anchor="middle" font-size="11" fill="#44546a">Claim → Evidence</text>
+  <text x="887" y="290" text-anchor="middle" font-size="11" fill="#44546a">(página e trecho)</text>
+  <text x="185" y="336" font-size="11" fill="#44546a">Guardrails: não inventar fatos · campos ausentes = null · omissões sempre avisadas · sem "melhor/pior/recomendada"</text>
+
+  <!-- Infra -->
+  <rect x="38" y="372" width="430" height="58" rx="8" fill="#eef2f6" stroke="#44546a"/>
+  <text x="253" y="396" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2328">SQLite</text>
+  <text x="253" y="416" text-anchor="middle" font-size="11.5" fill="#44546a">runs · documentos · textos · apólices · comparações · relatórios</text>
+  <line x1="253" y1="352" x2="253" y2="370" stroke="#44546a" stroke-width="1.6"/>
+
+  <rect x="530" y="372" width="430" height="58" rx="8" fill="#ece4f7" stroke="#7b5ea7"/>
+  <text x="745" y="396" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2328">OpenAI API (modelo configurável)</text>
+  <text x="745" y="416" text-anchor="middle" font-size="11.5" fill="#44546a">Structured Outputs · entrada de imagem (OCR) · juiz · redação · Q&amp;A</text>
+  <line x1="745" y1="352" x2="745" y2="370" stroke="#7b5ea7" stroke-width="1.6" stroke-dasharray="4 3"/>
+
+  <!-- Interface -->
+  <line x1="500" y1="430" x2="500" y2="458" stroke="#44546a" stroke-width="1.6"/>
+  <rect x="20" y="462" width="960" height="150" rx="10" fill="#f8fafc" stroke="#0b3d62" stroke-width="1.6"/>
+  <text x="38" y="486" font-size="14" font-weight="bold" fill="#0b3d62">INTERFACE STREAMLIT</text>
+  <text x="230" y="486" font-size="11.5" fill="#44546a">estimativa de tempo · progresso por agente · modo apresentação (runs gravados)</text>
+  <g font-size="11.5" fill="#1f2328">
+    <rect x="38" y="502" width="170" height="44" rx="6" fill="#ece4f7" stroke="#7b5ea7"/>
+    <text text-anchor="middle" x="123" y="521">Resumo executivo</text><text text-anchor="middle" x="123" y="537">síntese · MD / PDF</text>
+    <rect x="220" y="502" width="140" height="44" rx="6" fill="#e3e9ef" stroke="#8898aa"/>
+    <text text-anchor="middle" x="290" y="521">Comparação</text><text text-anchor="middle" x="290" y="537">matriz · CSV</text>
+    <rect x="372" y="502" width="140" height="44" rx="6" fill="#e3e9ef" stroke="#8898aa"/>
+    <text text-anchor="middle" x="442" y="521">Evidências</text><text text-anchor="middle" x="442" y="537">A × B por página</text>
+    <rect x="524" y="502" width="130" height="44" rx="6" fill="#e3e9ef" stroke="#8898aa"/>
+    <text text-anchor="middle" x="589" y="521">Apólices</text><text text-anchor="middle" x="589" y="537">estrutura</text>
+    <rect x="666" y="502" width="140" height="44" rx="6" fill="#e3e9ef" stroke="#8898aa"/>
+    <text text-anchor="middle" x="736" y="521">Auditoria da IA</text><text text-anchor="middle" x="736" y="537">trace · JSON</text>
+    <rect x="818" y="502" width="142" height="44" rx="6" fill="#ece4f7" stroke="#7b5ea7"/>
+    <text text-anchor="middle" x="889" y="521">Consulta ao acervo</text><text text-anchor="middle" x="889" y="537">busca · Q&amp;A citado</text>
+  </g>
+  <text x="38" y="574" font-size="11.5" fill="#44546a">Decisão final humana: o sistema descreve diferenças documentais; não recomenda contratação.</text>
+
+  <polygon points="500.0,86.0 495.5,77.0 504.5,77.0" fill="#44546a"/>
+  <polygon points="192.0,190.0 183.0,194.5 183.0,185.5" fill="#44546a"/>
+  <polygon points="348.0,190.0 339.0,194.5 339.0,185.5" fill="#44546a"/>
+  <polygon points="504.0,190.0 495.0,194.5 495.0,185.5" fill="#44546a"/>
+  <polygon points="660.0,190.0 651.0,194.5 651.0,185.5" fill="#44546a"/>
+  <polygon points="816.0,190.0 807.0,194.5 807.0,185.5" fill="#44546a"/>
+  <polygon points="253.0,370.0 248.5,361.0 257.5,361.0" fill="#44546a"/>
+  <polygon points="745.0,370.0 740.5,361.0 749.5,361.0" fill="#7b5ea7"/>
+  <polygon points="500.0,458.0 495.5,449.0 504.5,449.0" fill="#44546a"/>
+  <polygon points="419.0,244.0 427.5,249.3 419.9,254.0" fill="#b54708"/>
+
+  <!-- Legend -->
+  <rect x="38" y="628" width="16" height="16" rx="3" fill="#ece4f7" stroke="#7b5ea7"/>
+  <text x="62" y="641" font-size="12" fill="#1f2328">usa IA generativa</text>
+  <rect x="200" y="628" width="16" height="16" rx="3" fill="#e3e9ef" stroke="#8898aa"/>
+  <text x="224" y="641" font-size="12" fill="#1f2328">determinístico</text>
+  <line x1="340" y1="636" x2="380" y2="636" stroke="#b54708" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <text x="388" y="641" font-size="12" fill="#1f2328">controle do Harness (retry)</text>
+</svg>

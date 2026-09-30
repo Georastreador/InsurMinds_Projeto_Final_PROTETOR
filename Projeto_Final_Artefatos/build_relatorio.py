@@ -11,5 +11,6 @@ from tools.report_export import markdown_to_pdf  # noqa: E402
 
 source = HERE / "Relatorio_Tecnico_InsurMinds_PROTETOR.md"
 target = HERE / "Relatorio_Tecnico_InsurMinds_PROTETOR.pdf"
-target.write_bytes(markdown_to_pdf(source.read_text(encoding="utf-8"), "InsurMinds_PROTETOR — Relatório Técnico"))
+target.write_bytes(markdown_to_pdf(source.read_text(encoding="utf-8"), "InsurMinds_PROTETOR — Relatório Técnico",
+                                    base_dir=str(HERE)))
 print(target.relative_to(HERE.parent))

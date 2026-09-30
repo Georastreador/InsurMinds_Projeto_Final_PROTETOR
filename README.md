@@ -49,8 +49,8 @@ Upload A/B ─► Harness (Orchestrator: estados, retries, guardrails, trace, pe
 ## Instalação
 
 ```bash
-git clone <URL-do-repositório>
-cd InsurMinds_PROTETOR
+git clone https://github.com/Georastreador/InsurMinds_Projeto_Final_PROTETOR.git
+cd InsurMinds_Projeto_Final_PROTETOR
 python -m venv venv
 source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt

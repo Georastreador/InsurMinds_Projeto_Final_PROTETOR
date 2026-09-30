@@ -3,7 +3,7 @@
 **Plataforma inteligente para análise e comparação de apólices D&O**  
 Projeto Final · I2A2 — Instituto de Inteligência Artificial Aplicada · Outubro de 2026  
 Grupo **Gp_Protetor** — Ricardo Croce (representante), José Carlos dos Passos, Renato Sant Anna, Tiago Del Rio e Juliano Silva Ignacio  
-Repositório: _a preencher_
+Repositório: https://github.com/Georastreador/InsurMinds_Projeto_Final_PROTETOR
 
 ## 1. Resumo
 
@@ -28,17 +28,25 @@ Objetivos do MVP:
 
 ## 3. Arquitetura da solução
 
-| Camada | Componentes | Papel |
-|---|---|---|
-| Interface | Streamlit (`app.py`) | Upload, progresso, resultados em 5 abas, consulta, downloads, modo apresentação |
-| Orquestração | Harness: `Orchestrator`, `CompleteMVPPipeline`, `scope`, `progress` | Estados, transições, retries, escopo/ramo, trace, persistência |
-| Agentes | A1 Intake, A2 Extraction, A3 Análise, A4 Validação, A5 Comparação, A6 Síntese, Consulta | Responsabilidades delimitadas |
-| IA generativa | Adaptadores OpenAI (`llm/client.py`, `tools/ocr_tools.py`) | OCR, extração, juiz semântico, síntese, Q&A |
-| Contratos | `PolicySchema`, `ComparisonResult`, `InsurMindsState`, taxonomia D&O | Formato comum e validável |
-| Dados | SQLite (`storage/database.py`) | Runs, documentos, textos, apólices, comparações, relatórios |
-| Qualidade | Golden Dataset, EVAL-01 a 05, runners LIVE, 98 testes | Medição e regressão |
+A solução tem quatro camadas:
 
-**Princípio central:** o Harness controla o sistema; os agentes executam funções delimitadas. Nenhum agente decide a sequência, repete a si mesmo ou encerra a execução. Isso torna o comportamento previsível, auditável e testável sem API.
+1. **Orquestração (Harness).** O `Orchestrator` mantém uma máquina de estados explícita (`CREATED → INGESTING → EXTRACTING → ANALYZING → VALIDATING → READY_TO_COMPARE → COMPARING → SYNTHESIZING → COMPLETED`, com `RETRYING`, `WARNING`, `REVIEW_REQUIRED` e `FAILED` como estados de exceção) e rejeita transições não previstas. O `CompleteMVPPipeline` executa os dois documentos sob um único `run_id`, avalia o escopo (ramo e natureza do documento), emite o progresso para a interface, registra cada evento no trace e persiste os artefatos.
+2. **Agentes especializados (A1 a A6 e Consulta).** Cada agente recebe uma entrada tipada e devolve uma saída tipada; nenhum decide a sequência, repete a si mesmo ou encerra a execução. Quatro deles usam IA generativa (A2 no OCR, A3, A5 e A6), sempre atrás de um contrato Pydantic e de guardrails no código.
+3. **Infraestrutura.** A API da OpenAI é acessada por adaptadores que implementam contratos neutros de provedor (`StructuredLLMClient`, `SemanticComparator`, `SynthesisWriter`, `OCREngine`), o que permite testar tudo com implementações simuladas e trocar o modelo por configuração. O SQLite guarda runs, documentos, textos, apólices, comparações e relatórios, e alimenta a Consulta.
+4. **Interface.** O Streamlit separa a experiência do analista (Resumo, Comparação, Evidências, Apólices, Consulta) da observabilidade técnica (Auditoria da IA), mostra estimativa de tempo e progresso por agente e reabre runs gravados no modo apresentação.
+
+![Arquitetura do InsurMinds_PROTETOR](arquitetura.png)
+
+*Figura 1 — Arquitetura do InsurMinds_PROTETOR. Em lilás, os componentes que usam IA generativa; em cinza, os determinísticos. A seta tracejada laranja é o ciclo de nova tentativa controlado pelo Harness.*
+
+| Contrato | Papel |
+|---|---|
+| `PolicySchema` | Representação canônica de um documento: identificação, vigência, limites, franquias, Sides A/B/C, coberturas, exclusões, cláusulas, extensões, ramo, natureza do documento e evidências |
+| `ComparisonResult` | Um item por campo ou conceito comparado, com valores de A e B, evidência de cada lado, estado controlado, confiança e critério |
+| `InsurMindsState` | Estado compartilhado do run: documentos, textos, apólices, comparação, síntese, métricas, avisos e trace |
+| Taxonomia D&O | 18 conceitos de cobertura, 17 de exclusão e 23 de cláusula (estrutura SUSEP), usados para parear itens entre seguradoras |
+
+**Princípio central:** o Harness controla o sistema; os agentes executam funções delimitadas. Isso torna o comportamento previsível, auditável e testável sem chamadas de API.
 
 ## 4. Fluxo completo de processamento
 
@@ -66,7 +74,20 @@ Objetivos do MVP:
 
 ## 6. Tecnologias utilizadas
 
-Python 3.10+, Streamlit, Pydantic v2, OpenAI API (Responses API, Structured Outputs e entrada de imagem), PyMuPDF, Markdown, SQLite e pytest. O modelo é configurável em `OPENAI_MODEL`; os resultados deste relatório foram obtidos com `gpt-5.6-luna`.
+| Tecnologia | Versão testada | Papel na solução | Por que foi escolhida |
+|---|---|---|---|
+| Python | 3.13 (requer 3.10+) | Linguagem de toda a solução | Ecossistema de IA e de documentos; usado ao longo do curso |
+| OpenAI API — Responses API | SDK `openai` 2.54 | OCR, extração, juiz semântico, síntese e consulta | Structured Outputs com JSON Schema estrito e entrada de imagem na mesma API e credencial |
+| Modelo `gpt-5.6-luna` | configurável em `OPENAI_MODEL` | Modelo usado nos resultados deste relatório | Suporte a schema estrito e visão; troca por configuração, sem mudar código |
+| Pydantic | 2.13 | Contratos (`PolicySchema`, `ComparisonResult`, estado) e validação do A4 | Validação declarativa, mensagens de erro usadas como feedback no retry, geração do JSON Schema |
+| PyMuPDF | 1.28 | Texto por página, detecção de páginas digitalizadas, renderização para OCR, PDF da síntese e do relatório | Rápido, sem dependências de sistema, lê e escreve PDF |
+| Streamlit | 1.64 | Interface: upload, progresso, abas, downloads, consulta | Protótipo funcional em Python puro, adequado a um MVP demonstrável |
+| SQLite | 3.50 (embutido no Python) | Armazenamento estruturado e base da Consulta | Sem servidor, arquivo único, suficiente para o volume do MVP |
+| pandas | 2.3 | Tabelas da interface e exportação CSV | Integração nativa com o Streamlit |
+| Markdown | 3.11 | Conversão da síntese e do relatório para PDF | Leve; a síntese já é produzida em Markdown |
+| python-dotenv | 1.2 | Leitura da chave e das configurações do `.env` | Mantém credenciais fora do código |
+| pytest | 9.1 | 98 testes automatizados sem chamadas de API | Padrão de mercado; permite testar agentes com dublês |
+| Tesseract (opcional) | — | OCR offline, usado apenas se estiver instalado | Alternativa sem internet para o modo DEMO |
 
 ## 7. Justificativa das decisões arquiteturais
 

@@ -12,3 +12,4 @@ data/ocr_test/
 venv/
 *.zip
 data/uploads/
+~$*
