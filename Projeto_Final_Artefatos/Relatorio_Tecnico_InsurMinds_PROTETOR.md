@@ -2,7 +2,7 @@
 
 **Plataforma inteligente para análise e comparação de apólices D&O**  
 Projeto Final · I2A2 — Instituto de Inteligência Artificial Aplicada · Outubro de 2026  
-Grupo **Gp_Protetor** — Ricardo Croce (representante), José Carlos dos Passos, Renato Sant Anna, Tiago Del Rio e Juliano Silva Ignacio  
+Grupo **Gp_Protetor** — Ricardo Croce (Chefe), José Carlos dos Passos, Renato Sant Anna, Tiago Del Rio e Juliano Silva Ignacio.  
 Repositório: https://github.com/Georastreador/InsurMinds_Projeto_Final_PROTETOR
 
 ## 1. Resumo
