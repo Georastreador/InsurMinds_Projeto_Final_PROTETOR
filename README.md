@@ -136,7 +136,7 @@ A chave de API é lida apenas do `.env`, que está no `.gitignore`; o repositór
 
 | Nome | Papel |
 |---|---|
-| Ricardo Croce | Representante do grupo |
+| Ricardo Croce | Chefe do grupo |
 | José Carlos dos Passos | Integrante |
 | Renato Sant Anna | Integrante |
 | Tiago Del Rio | Integrante |

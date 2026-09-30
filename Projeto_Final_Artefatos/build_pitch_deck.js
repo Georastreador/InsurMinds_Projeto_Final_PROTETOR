@@ -80,7 +80,7 @@ async function build() {
       x: M, y: 4.05, w: 11.5, h: 0.5, fontFace: BODY, fontSize: 18, italic: true, color: AMBER, margin: 0, isTextBox: true });
     s.addText([
       { text: "Projeto Final · I2A2 — Instituto de Inteligência Artificial Aplicada · 2026", options: { breakLine: true } },
-      { text: "Grupo Gp_Protetor: Ricardo Croce (representante), José Carlos dos Passos, Renato Sant Anna, Tiago Del Rio, Juliano Silva Ignacio" },
+      { text: "Grupo Gp_Protetor: Ricardo Croce (Chefe), José Carlos dos Passos, Renato Sant Anna, Tiago Del Rio, Juliano Silva Ignacio" },
     ], { x: M, y: 5.6, w: 12, h: 0.8, fontFace: BODY, fontSize: 14, color: ICE, margin: 0, paraSpaceAfter: 4, isTextBox: true });
     s.addNotes("Apresentação do InsurMinds_PROTETOR, plataforma que lê, compara e explica apólices D&O com IA generativa. Mensagem central: o sistema automatiza a leitura e a comparação, mostra a página de cada evidência e deixa a decisão ao especialista.");
   }
