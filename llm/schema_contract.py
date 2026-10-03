@@ -12,6 +12,8 @@ from typing import Any
 
 # Identity fields are pipeline facts assigned by A3, never requested from the LLM.
 PIPELINE_OWNED_FIELDS = ("document_id", "source_file")
+# Evidence verification flags are computed by the Harness after A4 (tools/evidence_check.py).
+PIPELINE_OWNED_REFERENCE_FIELDS = ("verified", "verified_page")
 
 # Keywords that strict mode rejects or that only A4 needs to enforce.
 # `format` is removed because forcing the date shape made the model garble DD/MM/YYYY dates;
@@ -42,4 +44,7 @@ def strict_policy_json_schema(schema: dict[str, Any]) -> dict[str, Any]:
     schema = copy.deepcopy(schema)
     for field in PIPELINE_OWNED_FIELDS:
         schema.get("properties", {}).pop(field, None)
+    ref = schema.get("$defs", {}).get("SourceReference", {})
+    for field in PIPELINE_OWNED_REFERENCE_FIELDS:
+        ref.get("properties", {}).pop(field, None)
     return _sanitize(schema)

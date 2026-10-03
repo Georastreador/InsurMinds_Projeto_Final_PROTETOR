@@ -11,15 +11,16 @@ import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
 
-from llm.client import (DemoHeuristicLLMClient, OpenAIQueryResponder, OpenAISemanticComparator,
-                        OpenAIStructuredLLMClient, OpenAISynthesisWriter)
+from llm.client import DemoHeuristicLLMClient, OpenAIQueryResponder, OpenAIStructuredLLMClient, OpenAIVerdictClassifier
+from llm.factory import build_live_components
+from guardrails.verdict import VerdictGuard
 from agents.query_agent import GROUPS, QueryAgent, catalog, search
 from storage.database import Database
 from orchestration.mvp_pipeline import CompleteMVPPipeline
 from orchestration.state import InsurMindsState
 from orchestration.progress import estimate_ocr_seconds, estimate_run_seconds, fmt_chars, fmt_duration, fmt_pages
 from tools.pdf_tools import extract_pdf_text
-from tools.ocr_tools import GPTVisionOCR, IMAGE_EXTENSIONS, TesseractOCR
+from tools.ocr_tools import IMAGE_EXTENSIONS, TesseractOCR
 from tools.report_export import synthesis_markdown, synthesis_pdf
 from schemas.labels import STATUS_LABELS, TECHNICAL_WARNING_PREFIX, display_name, human_field
 from agents.synthesis_agent import _priority as contractual_priority
@@ -75,6 +76,13 @@ def source_text(source: Any) -> str:
     if section:
         parts.append(str(section))
     heading = " · ".join(parts) if parts else "Referência documental"
+    verified = source.get("verified") if isinstance(source, dict) else None
+    if verified is True:
+        heading += " · ✅ trecho conferido na página"
+    elif verified is False and source.get("verified_page"):
+        heading += f" · ⚠️ trecho localizado na página {source['verified_page']}, não na citada"
+    elif verified is False:
+        heading += " · ⚠️ trecho não localizado no texto da página"
     return f"**{heading}**\n\n{excerpt or 'Trecho não registrado.'}"
 
 
@@ -173,7 +181,7 @@ with st.sidebar:
     else:
         st.info("DEMO usa extração heurística e não representa avaliação GenAI.")
     st.divider()
-    st.markdown("**Pipeline multiagente**")
+    st.markdown("**Workflow orquestrado**")
     st.caption("A1 Intake → A2 Extraction → A3 D&O Analysis → A4 Validation → A5 Comparison → A6 Synthesis")
     st.caption("O Harness controla estado, transições, retries, persistência e observabilidade.")
     st.divider()
@@ -230,7 +238,8 @@ def render_consulta() -> None:
             db = Database(DB_PATH)
             docs = [(tag, labels[name], db.get_raw_text(labels[name].document_id) or "") for tag, name in zip("AB", selected)]
             with st.spinner("Selecionando páginas e consultando…"):
-                result = QueryAgent(OpenAIQueryResponder() if live else None).answer(question, docs)
+                guard = VerdictGuard(OpenAIVerdictClassifier() if live and os.getenv("VERDICT_LLM_CHECK", "true").lower() in {"1", "true", "yes", "sim", "on"} else None)
+                result = QueryAgent(OpenAIQueryResponder() if live else None, guard).answer(question, docs)
             for tag, name in zip("AB", selected):
                 st.caption(f"**{tag}** = {name}")
             if result["answer"]:
@@ -300,14 +309,14 @@ if process:
             if not live_available:
                 st.error("Configure OPENAI_API_KEY antes de executar LIVE GPT.")
                 st.stop()
-            llm = OpenAIStructuredLLMClient()
-            semantic = OpenAISemanticComparator()
-            writer = OpenAISynthesisWriter()
-            ocr = GPTVisionOCR()
+            live_parts = build_live_components()
+            llm, semantic, writer, ocr, guard = (live_parts.llm, live_parts.semantic, live_parts.writer,
+                                                 live_parts.ocr, live_parts.guard)
         else:
             llm = DemoHeuristicLLMClient()
             semantic = writer = None  # A5/A6 use their deterministic fallbacks
             ocr = None  # Tesseract if installed; otherwise scanned documents require LIVE
+            guard = VerdictGuard()
         with st.status("Executando Harness e agentes A1 → A6…", expanded=True) as run_status:
             bar = st.progress(0.0, text="Iniciando…")
 
@@ -316,7 +325,7 @@ if process:
                 st.write(md_safe(message))
 
             pipeline = CompleteMVPPipeline(llm, semantic=semantic, writer=writer, db_path=str(DB_PATH),
-                                           progress=report_progress, ocr=ocr)
+                                           progress=report_progress, ocr=ocr, guard=guard)
             state = pipeline.process(pa, pb)
             done = state.status.value in {"COMPLETED", "REVIEW_REQUIRED"}
             run_status.update(label=f"{'Concluído' if done else 'Interrompido'} em {fmt_duration(state.metrics.get('duration_s', 0))}",
@@ -365,7 +374,7 @@ m1, m2, m3, m4 = st.columns(4)
 m1.metric("Campos comparados", len(rows))
 m2.metric("Diferenças / exclusivos", attention)
 m3.metric("Itens iguais", counts.get("EQUAL", 0))
-m4.metric("Revisão humana", counts.get("REVIEW_REQUIRED", 0))
+m4.metric("Revisão humana", sum(1 for x in state.comparison.fields if x.review_required) if state.comparison else 0)
 
 tabs = st.tabs(["Resumo executivo", "Comparação", "Evidências", "Apólices", "Auditoria da IA"])
 
@@ -458,6 +467,20 @@ with tabs[4]:
     a1.metric("Status", state.status.value)
     a2.metric("Eventos de trace", len(state.trace))
     a3.metric("Warnings", len(state.warnings))
+    evidence = state.metrics.get("evidence_check") or {}
+    if evidence:
+        st.markdown("**Verificação de evidências (Claim → Evidence)**")
+        st.dataframe(pd.DataFrame([{"Documento": k, "Referências": v.get("references"), "Conferidas na página": v.get("verified"),
+                                    "Em outra página": v.get("wrong_page"), "Não localizadas": v.get("not_found"),
+                                    "Taxa": v.get("verified_rate")} for k, v in evidence.items()]),
+                     use_container_width=True, hide_index=True)
+    usage = state.metrics.get("llm_usage") or {}
+    if usage.get("by_stage"):
+        st.markdown("**Consumo do provedor (tokens)**")
+        st.dataframe(pd.DataFrame([{"Etapa": k, **v} for k, v in usage["by_stage"].items()]), use_container_width=True, hide_index=True)
+        cost = usage.get("estimated_cost_usd")
+        st.caption(f"Total: {usage['total']['input_tokens']:,} tokens de entrada · {usage['total']['output_tokens']:,} de saída"
+                   + (f" · custo estimado US$ {cost:.4f}" if cost is not None else f" · {usage.get('cost_note')}"))
     if state.metrics:
         st.markdown("**Métricas do run**")
         st.json(state.metrics)

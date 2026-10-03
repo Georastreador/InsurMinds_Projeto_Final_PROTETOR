@@ -17,7 +17,7 @@ from schemas.labels import CONCEPT_LABELS, display_name
 from schemas.policy import PolicySchema
 from storage.database import Database
 from tools.text_budget import split_pages
-from agents.synthesis_agent import has_verdict
+from guardrails.verdict import VerdictGuard
 
 GROUPS = {"coverages": "Cobertura", "extensions": "Extensão", "exclusions": "Exclusão",
           "clauses": "Cláusula", "retentions": "Franquia / retenção"}
@@ -111,8 +111,9 @@ class QueryResponder(Protocol):
 class QueryAgent:
     name = "CONSULTA"
 
-    def __init__(self, responder: Optional[QueryResponder] = None):
+    def __init__(self, responder: Optional[QueryResponder] = None, guard: Optional[VerdictGuard] = None):
         self.responder = responder
+        self.guard = guard or VerdictGuard()
 
     def answer(self, question: str, documents: list[tuple[str, StoredDocument, str]]) -> dict[str, Any]:
         """documents: (label 'A'/'B', stored document, raw text). Returns answer, citations and the pages used."""
@@ -137,8 +138,9 @@ class QueryAgent:
         valid = {(label, p["page"]) for label, pages in excerpts.items() for p in pages}
         cited = [c for c in out.get("citations", []) if (c.get("doc"), c.get("page")) in valid]
         answer = out.get("answer", "")
-        if has_verdict(answer):
-            result["note"] = "Resposta descartada por conter linguagem de veredito (melhor/pior/recomendada)."
+        check = self.guard.check(answer)
+        if check.blocked:
+            result["note"] = f"Resposta descartada por conter linguagem de veredito ({check.reason})."
             return result
         dropped = len(out.get("citations", [])) - len(cited)
         result.update(answer=answer, citations=cited, found=bool(out.get("found")),

@@ -3,7 +3,8 @@ import fitz
 import pytest
 from agents.intake_agent import IntakeAgent, IntakeError
 from agents.extraction_agent import ExtractionAgent
-from orchestration.pipeline import DocumentPipeline
+from llm.client import DeterministicLLMClient
+from orchestration.mvp_pipeline import CompleteMVPPipeline
 from orchestration.state import RunStatus
 from storage.database import Database
 
@@ -29,9 +30,11 @@ def test_database_roundtrip(tmp_path):
     assert 'Limite de Responsabilidade' in db.get_raw_text(d['document_id'])
 
 def test_pipeline_integration(tmp_path):
-    p=tmp_path/'policy.pdf'; make_pdf(p,'Apólice D&O integrada')
-    pipeline=DocumentPipeline(tmp_path/'pipeline.db'); s=pipeline.process_document(p)
-    assert s.status == RunStatus.EXTRACTING
-    assert len(s.documents)==1 and len(s.raw_texts)==1
-    assert s.metrics['extraction_method']=='PYMUPDF'
+    a=tmp_path/'a.pdf'; b=tmp_path/'b.pdf'; make_pdf(a,'Apólice D&O integrada A'); make_pdf(b,'Apólice D&O integrada B')
+    llm=DeterministicLLMClient([{'policy_type':'D&O'}])
+    s=CompleteMVPPipeline(llm,db_path=tmp_path/'pipeline.db').process(a,b)
+    assert s.status == RunStatus.COMPLETED
+    assert len(s.documents)==2 and len(s.raw_texts)==2
+    assert [e.details['method'] for e in s.trace if e.event=='TEXT_EXTRACTED']==['PYMUPDF','PYMUPDF']
     assert not s.errors
+    assert Database(tmp_path/'pipeline.db').get_raw_text(s.documents[0]['document_id'])

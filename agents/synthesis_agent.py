@@ -6,15 +6,8 @@ from schemas.comparison import ComparisonResult, ComparisonStatus, FieldComparis
 from schemas.do_taxonomy import fold
 from schemas.labels import STATUS_LABELS, human_field, short_value
 
-PROHIBITED_VERDICTS = {
-    "best","worst","better","worse","recommended",
-    "melhor","pior","recomendado","recomendada"
-}
-
-def has_verdict(text: str) -> bool:
-    """Verdict language as a whole word, regardless of punctuation or accents (guardrail for all generated text)."""
-    folded = fold(text or "")
-    return any(re.search(rf"\b{t}\b", folded) for t in PROHIBITED_VERDICTS)
+# The guardrail lives in guardrails/verdict.py; re-exported here for backward compatibility.
+from guardrails.verdict import PROHIBITED_VERDICTS, VerdictGuard, has_verdict  # noqa: F401
 
 
 MATERIAL = {ComparisonStatus.DIFFERENT, ComparisonStatus.ONLY_A, ComparisonStatus.ONLY_B, ComparisonStatus.REVIEW_REQUIRED}
@@ -63,10 +56,12 @@ class SynthesisAgent:
     """
     name = "A6_SYNTHESIS"
 
-    def __init__(self, writer: Optional[SynthesisWriter] = None):
+    def __init__(self, writer: Optional[SynthesisWriter] = None, guard: Optional[VerdictGuard] = None):
         self.writer = writer
+        self.guard = guard or VerdictGuard()
         self.last_method = "deterministic"
         self.last_warning: Optional[str] = None
+        self.last_guard: Optional[dict[str, Any]] = None
 
     # --- helpers ----------------------------------------------------------------
     @staticmethod
@@ -75,8 +70,14 @@ class SynthesisAgent:
         for side, v in (("A", item.policy_a), ("B", item.policy_b)):
             if v.value is None:
                 parts.append(f"{side} não identificado")
+            elif not (v.source and v.source.page):
+                parts.append(f"{side} sem página")
+            elif v.source.verified is False and v.source.verified_page:
+                parts.append(f"{side} p. {v.source.page} (trecho localizado na p. {v.source.verified_page})")
+            elif v.source.verified is False:
+                parts.append(f"{side} p. {v.source.page} (trecho não confirmado)")
             else:
-                parts.append(f"{side} p. {v.source.page}" if v.source and v.source.page else f"{side} sem página")
+                parts.append(f"{side} p. {v.source.page}")
         return " · ".join(parts)
 
     @staticmethod
@@ -113,8 +114,12 @@ class SynthesisAgent:
         key = [(by_id[d["id"]], d["summary"]) for d in draft.get("key_differences", []) if d.get("id") in by_id]
         review = [(by_id[d["id"]], d["summary"]) for d in draft.get("review_points", []) if d.get("id") in by_id]
         texts = [draft.get("overview", "")] + [s for _, s in key + review]
-        if self._has_verdict(" ".join(texts)):
-            self.last_warning = "A6: síntese generativa descartada por conter linguagem de veredito; usada síntese determinística."
+        check = self.guard.check("\n".join(texts))
+        self.last_guard = {"blocked": check.blocked, "layer": check.layer, "reason": check.reason,
+                           "classifier_error": check.classifier_error}
+        if check.blocked:
+            self.last_warning = (f"A6: síntese generativa descartada por conter linguagem de veredito "
+                                 f"(camada {check.layer}: {check.reason}); usada síntese determinística.")
             return None
         return draft.get("overview", ""), key[:MAX_KEY_DIFFERENCES], review[:MAX_REVIEW_POINTS]
 
@@ -123,7 +128,7 @@ class SynthesisAgent:
         if comparison is None:
             raise ValueError("A6 requires a ComparisonResult")
         context = context or {}
-        self.last_method, self.last_warning = "deterministic", None
+        self.last_method, self.last_warning, self.last_guard = "deterministic", None, None
         counts = Counter(item.status.value for item in comparison.fields)
         material = self._material(comparison)
 

@@ -1,0 +1,21 @@
+{
+  "dataset": "Golden Dataset v1.0 (referência) e v1.1 (revisada após ver a saída)",
+  "date": "2026-10-01",
+  "supersedes": "EVALUATION_STATUS_v1.1.json (mantido para histórico; reportava o melhor run)",
+  "method": "Reavaliação offline, com o avaliador da v1.3, de todos os runs LIVE gravados (python -m evaluation.aggregate_runs). Reporta média e pior caso.",
+  "aggregate_report": "evaluation/results/AGGREGATE_20260930_235835.json",
+  "runs_current_A5": 3,
+  "results_mean_worst": {
+    "EVAL-02 Chubb / Sompo": "0.97 (pior 0.92) / 1.00 — baseline de nulos 0.50 / 0.55; campos com valor 1.00 / 1.00",
+    "EVAL-03 página": "1.00 / 1.00; trecho igual ao gabarito 0.61 / 0.27",
+    "Evidência conferida na página (todas as referências)": "0.98–1.00",
+    "EVAL-04 v1.0 (10 itens)": "0.77 (pior 0.70) — meta 0.90 não atingida",
+    "EVAL-04 v1.0 (5 discriminantes)": "0.53 (pior 0.40)",
+    "EVAL-04 v1.1 (10 itens)": "0.97 (pior 0.90)"
+  },
+  "calibration": "evaluation/results/CALIBRATION_v1.0.md — confiança do juiz ≥ 0.78 em 79 itens; itens rotulados com confiança ≥ 0.95 acertaram 0.53 (v1.0)",
+  "pending": [
+    "Os runs gravados são da v1.2; executar run_live_golden --live ≥ 3 vezes com a v1.3 e reagregar.",
+    "Anotar o gabarito v2.0 (ANNOTATION_PROTOCOL.md) antes de novos runs."
+  ]
+}

@@ -39,14 +39,21 @@ def eval_02(policy, gold) -> EvalResult:
                      "correct": _norm(actual) == _norm(ann.expected)})
     correct = sum(r["correct"] for r in rows)
     score = correct / len(rows) if rows else 0.0
+    # v1.3: separate "must stay empty" fields (a null-returning extractor already gets them right)
+    # from the fields that require extracting something.
+    disc = [r for r in rows if r["expected"] not in (None, "", [], {})]
     return EvalResult(eval_id="EVAL-02", name=f"Field extraction accuracy ({gold.document_id})", score=score,
                       passed=bool(rows) and score >= 0.80, numerator=correct, denominator=len(rows),
-                      details={"fields": rows, "out_of_schema_fields": gaps},
+                      details={"fields": rows, "out_of_schema_fields": gaps,
+                               "discriminant": {"correct": sum(r["correct"] for r in disc), "total": len(disc),
+                                                "score": (sum(r["correct"] for r in disc) / len(disc)) if disc else None},
+                               "null_baseline": {"correct": len(rows) - len(disc), "total": len(rows),
+                                                 "score": ((len(rows) - len(disc)) / len(rows)) if rows else None}},
                       limitations=["Concept annotations are mapped by the deterministic rules in golden_resolvers.py.",
                                    "OUT_OF_SCHEMA annotations are excluded from the denominator and require human review."])
 
 
-def eval_03(policy, gold) -> EvalResult:
+def eval_03(policy, gold, raw_text: str = "") -> EvalResult:
     rows = []
     for ann in gold.annotations:
         if ann.expected in (None, "", [], {}):
@@ -65,9 +72,16 @@ def eval_03(policy, gold) -> EvalResult:
                      "page_match": page_match, "excerpt_match": excerpt_match})
     grounded = sum(r["page_match"] for r in rows)
     score = grounded / len(rows) if rows else 0.0
+    # v1.3: runtime verification of every evidence excerpt against its cited page (all references, not only gold fields).
+    runtime = None
+    if raw_text:
+        from tools.evidence_check import verify_policy
+        from tools.text_budget import split_pages
+        runtime = {k: v for k, v in verify_policy(policy.model_copy(deep=True), split_pages(raw_text)).items() if k != "wrong_page_examples"}
     return EvalResult(eval_id="EVAL-03", name=f"Evidence grounding ({gold.document_id})", score=score,
                       passed=bool(rows) and score >= 0.80, numerator=grounded, denominator=len(rows),
-                      details={"fields": rows, "excerpt_match_rate": (sum(r["excerpt_match"] for r in rows) / len(rows)) if rows else 0.0},
+                      details={"fields": rows, "excerpt_match_rate": (sum(r["excerpt_match"] for r in rows) / len(rows)) if rows else 0.0,
+                               "runtime_evidence_check": runtime},
                       limitations=["Primary criterion: the evidence attached to the extracted fact cites the page cited by the human annotator.",
                                    "Secondary (details.excerpt_match_rate): verbatim overlap with the annotated excerpt."])
 
@@ -102,8 +116,12 @@ def eval_04(state: InsurMindsState, gold_version: str = "v1.1") -> EvalResult:
         rows.append({"field": field, "expected": exp, "actual": actual, "a5_fields": a5_fields, "correct": actual == exp})
     correct = sum(r["correct"] for r in rows)
     score = correct / len(rows)
+    disc = [r for r in rows if r["expected"] != "NOT_IDENTIFIED"]
     return EvalResult(eval_id="EVAL-04", name=f"Comparison accuracy (end-to-end LIVE, gabarito {gold_version})", score=score,
-                      passed=score >= 0.90, numerator=correct, denominator=len(rows), details={"fields": rows},
+                      passed=score >= 0.90, numerator=correct, denominator=len(rows),
+                      details={"fields": rows,
+                               "discriminant": {"correct": sum(r["correct"] for r in disc), "total": len(disc),
+                                                "score": sum(r["correct"] for r in disc) / len(disc) if disc else None}},
                       limitations=["Measured on A5 output from a real LIVE run, not on curated representations."])
 
 
@@ -114,7 +132,7 @@ def evaluate(state: InsurMindsState) -> dict:
     results = [
         ev.eval_01_schema_validity(pa), ev.eval_01_schema_validity(pb),
         eval_02(pa, ga), eval_02(pb, gb),
-        eval_03(pa, ga), eval_03(pb, gb),
+        eval_03(pa, ga, state.raw_texts.get(pa.document_id, "")), eval_03(pb, gb, state.raw_texts.get(pb.document_id, "")),
         eval_04(state, "v1.0"),
         eval_04(state, "v1.1"),
         ev.eval_05_unsupported_claim_proxy(pa, state.raw_texts[pa.document_id]),
@@ -134,11 +152,14 @@ def evaluate(state: InsurMindsState) -> dict:
 def run_live() -> InsurMindsState:
     import os
     from dotenv import load_dotenv
-    from llm.client import OpenAISemanticComparator, OpenAIStructuredLLMClient, OpenAISynthesisWriter
+    from llm.factory import build_live_components
     from orchestration.mvp_pipeline import CompleteMVPPipeline
     load_dotenv(ROOT / ".env")
-    state = CompleteMVPPipeline(OpenAIStructuredLLMClient(), semantic=OpenAISemanticComparator(), writer=OpenAISynthesisWriter(), db_path=str(ROOT / "data" / "insurminds_protetor.db")).process(PDF_A, PDF_B)
+    c = build_live_components()
+    state = CompleteMVPPipeline(c.llm, semantic=c.semantic, writer=c.writer, ocr=c.ocr, guard=c.guard,
+                                db_path=str(ROOT / "data" / "insurminds_protetor.db")).process(PDF_A, PDF_B)
     state.metrics["llm_model"] = os.getenv("OPENAI_MODEL")
+    state.metrics["extraction_mode"] = c.extraction_mode
     return state
 
 

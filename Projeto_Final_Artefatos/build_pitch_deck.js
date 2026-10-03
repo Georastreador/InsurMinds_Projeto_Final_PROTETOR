@@ -162,7 +162,7 @@ async function build() {
       ], { x: tx, y: 1.55 + i * 1.3, w: tw, h: 1.15, fontFace: BODY, margin: 0, valign: "top", isTextBox: true });
     });
     footer(s, n);
-    s.addNotes("O princípio central: o Harness controla estados, retries, escopo e persistência; os agentes só executam a sua função. Isso torna o sistema previsível e testável sem API: são 98 testes automatizados. Os blocos em lilás usam IA generativa.");
+    s.addNotes("O princípio central: o Harness controla estados, retries, escopo e persistência; os agentes só executam a sua função. Isso torna o sistema previsível e testável sem API: são 145 testes automatizados. Os blocos em lilás usam IA generativa.");
   }
 
   // 5 — Agentes ------------------------------------------------------------------------
@@ -266,20 +266,20 @@ async function build() {
     title(s, "Resultados no Golden Dataset D&O (Chubb × Sompo)");
     s.addChart(pres.charts.BAR, [{
       name: "Resultado",
-      labels: ["Schema válido", "Campos corretos", "Evidência na página", "Comparação (gab. v1.0)", "Comparação (gab. v1.1)", "Proxy de alucinação"],
-      values: [1.0, 1.0, 1.0, 0.8, 1.0, 1.0],
+      labels: ["Schema válido", "Campos com valor anotado", "Trechos conferidos na página", "Comparação v1.0 — média", "Comparação v1.0 — pior caso", "Comparação v1.1 — média"],
+      values: [1.0, 1.0, 0.99, 0.77, 0.70, 0.97],
     }], {
-      x: M, y: 1.45, w: 7.6, h: 5.1, barDir: "bar", chartColors: [INK, INK, INK, AMBER, INK, INK],
+      x: M, y: 1.45, w: 7.6, h: 5.1, barDir: "bar", chartColors: [INK, INK, INK, AMBER, AMBER, INK],
       showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0.00", dataLabelFontSize: 12,
       dataLabelColor: TEXT, catAxisLabelColor: TEXT, catAxisLabelFontSize: 12, valAxisHidden: true,
       valAxisMinVal: 0, valAxisMaxVal: 1.15, valGridLine: { style: "none" }, catGridLine: { style: "none" },
-      showLegend: false, showTitle: true, title: "EVAL-01 a EVAL-05 (1,00 = 100%)", titleFontSize: 14,
+      showLegend: false, showTitle: true, title: "Média de 3 runs LIVE (1,00 = 100%) · meta da comparação: 0,90", titleFontSize: 14,
       titleColor: INK, catAxisOrientation: "maxMin", barGapWidthPct: 60,
     });
     const facts = [
-      ["12/12 · 11/11", "campos anotados extraídos corretamente (Chubb · Sompo)"],
-      ["6/6 · 5/5", "evidências citando a página anotada pelo especialista"],
-      ["0,80 → 1,00", "comparação: divergências da v1.0 confirmadas no texto e revisadas na v1.1"],
+      ["0,77 · pior 0,70", "comparação no gabarito original v1.0 (meta 0,90 ainda não atingida)"],
+      ["98–100%", "trechos de evidência conferidos no texto da página citada"],
+      ["0 de 20", "frases de veredito que passam pelo guardrail (eram 20 de 20)"],
     ];
     facts.forEach(([big, small], i) => {
       const y = 1.55 + i * 1.6;
@@ -289,10 +289,10 @@ async function build() {
         { text: small, options: { color: TEXT, fontSize: 13 } },
       ], { x: 8.85, y: y + 0.1, w: 3.7, h: 1.15, fontFace: BODY, margin: 0, valign: "middle", isTextBox: true });
     });
-    s.addText("Amostra pequena (2 documentos, 10 itens de comparação); as duas versões do gabarito são reportadas.", {
+    s.addText("Amostra pequena (2 documentos, 10 itens, 5 discriminantes). Média e pior caso de 3 runs, não o melhor run. v1.1 revisada após ver a saída.", {
       x: M, y: 6.6, w: W - 2 * M, h: 0.35, fontFace: BODY, fontSize: 11, italic: true, color: MUTED, margin: 0, isTextBox: true });
     footer(s, n);
-    s.addNotes("Os campos que as condições gerais delegam à Especificação ficaram vazios, como no gabarito: o modelo não inventou valores. Na comparação, a v1.0 anotava exclusões pela presença do tema; o sistema apontou diferenças de alcance (ambiental e cibernética), que o grupo conferiu nas páginas 42, 51–55, 65 e 17. O gabarito v1.1 registra isso, e mostramos as duas versões.");
+    s.addNotes("Reportamos média e pior caso de três execuções, não a melhor. Metade dos campos e itens do gabarito espera 'não identificado' e mede o guardrail de não inventar; nos 5 itens de comparação que exigem julgamento, a média é 0,53 no gabarito original. A v1.1 do gabarito foi revisada depois de vermos a saída (ambiental e cibernética, conferidas nas páginas 42, 51–55, 65 e 17), por isso a v1.0 é a referência. Cada trecho de evidência agora é conferido no texto da página, e o guardrail anti-veredito passou a bloquear as 20 frases adversariais do teste.");
   }
 
   // 9 — Evolução -----------------------------------------------------------------------
@@ -301,7 +301,7 @@ async function build() {
     title(s, "Decisões que mudaram o resultado");
     const pairs = [
       ["Extração LIVE", "22 erros", "de schema no 1º teste", "1ª tentativa", "aceita com schema estrito"],
-      ["Comparação", "0,50", "pareando pelo nome dado pelo LLM", "0,80", "com taxonomia D&O + juiz semântico"],
+      ["Comparação", "0,50", "pareando pelo nome dado pelo LLM", "0,77", "média de 3 runs (pior 0,70), taxonomia + juiz"],
       ["Síntese", "87 mil", "caracteres, texto técnico", "~5 mil", "caracteres, gerada por IA com páginas"],
     ];
     for (let i = 0; i < pairs.length; i++) {

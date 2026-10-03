@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 from decimal import Decimal
 from enum import Enum
 from typing import Protocol, Optional, Any, Callable
@@ -8,9 +9,14 @@ from orchestration.scope import is_do
 from schemas.do_taxonomy import (ClauseCategory, CoverageCategory, ExclusionCategory, canonical_policy_type,
                                  canonical_territorial_scope, categorize, fold)
 
-PROHIBITED_VERDICTS = {"best","worst","better","worse","recommended","melhor","pior","recomendado","recomendada"}
+from guardrails.verdict import PROHIBITED_VERDICTS, has_verdict  # noqa: F401  (single source of the guardrail)
 SEMANTIC_STATUSES = {"EQUAL", "DIFFERENT", "REVIEW_REQUIRED"}
-MIN_SEMANTIC_CONFIDENCE = 0.7
+# Self-reported LLM confidence is not calibrated: the threshold is configurable and should be set from
+# evaluation/calibration.py, not assumed. 0.7 is the v1.2 value.
+MIN_SEMANTIC_CONFIDENCE = float(os.getenv("A5_MIN_CONFIDENCE", "0.7"))
+# Confidence ceiling for items whose evidence excerpt was not found on the cited page.
+UNVERIFIED_EVIDENCE_MAX_CONFIDENCE = 0.6
+ORPHAN_PAIR_PREFIX = "Pareado por similaridade"
 
 class SemanticComparator(Protocol):
     """Judges whether paired contractual content is equivalent.
@@ -176,7 +182,6 @@ class ComparisonAgent:
         return [merged.get(id(x),x) for x in fields if merged.get(id(x),x) is not None]
 
     def _judge(self, pending):
-        from agents.synthesis_agent import has_verdict  # local import: synthesis imports labels only
         if not pending: return
         requests=[(field,va,vb) for _,field,va,vb in pending]
         if hasattr(self.semantic,"compare_many"):
@@ -191,10 +196,28 @@ class ComparisonAgent:
                 status="REVIEW_REQUIRED"; reason=f"Confiança {conf:.2f} abaixo do mínimo; {reason or ''}".strip()
             if reason and has_verdict(reason):
                 status="REVIEW_REQUIRED"; reason="Justificativa semântica descartada por conter linguagem de veredito."
-            if item.reason and item.reason.startswith("Pareado por similaridade"):
+            orphan=bool(item.reason and item.reason.startswith(ORPHAN_PAIR_PREFIX))
+            if orphan:
                 reason=f"{item.reason} {reason or ''}".strip()
             item.status=ComparisonStatus(status); item.confidence=conf; item.reason=reason
-            item.review_required=item.status==ComparisonStatus.REVIEW_REQUIRED
+            # Pairs formed by the LLM outside the taxonomy always go to human review (status is kept).
+            item.review_required=item.status==ComparisonStatus.REVIEW_REQUIRED or orphan
+            if orphan and item.status!=ComparisonStatus.REVIEW_REQUIRED:
+                item.reason=f"{item.reason} Revisão humana obrigatória: par formado fora da taxonomia."
+
+    @staticmethod
+    def _flag_unverified_evidence(fields):
+        """Lower confidence and flag items whose evidence was not found on the cited page."""
+        for item in fields:
+            sides=[side for side,v in (("A",item.policy_a),("B",item.policy_b)) if v.source is not None and v.source.verified is False]
+            if not sides: continue
+            notes=[]
+            for side,v in (("A",item.policy_a),("B",item.policy_b)):
+                if side in sides:
+                    where=f"localizado na p. {v.source.verified_page}" if v.source.verified_page else "não localizado"
+                    notes.append(f"{side}: trecho {where} (citada p. {v.source.page})")
+            item.confidence=min(item.confidence if item.confidence is not None else 1.0, UNVERIFIED_EVIDENCE_MAX_CONFIDENCE)
+            item.reason=(f"{item.reason} " if item.reason else "")+"Evidência não confirmada — "+"; ".join(notes)+"."
 
     def compare(self, run_id: str, a: PolicySchema, b: PolicySchema) -> ComparisonResult:
         fields=[]; pending=[]
@@ -221,6 +244,7 @@ class ComparisonAgent:
         fields.extend(self._categorized("clauses",a.clauses,b.clauses,ClauseCategory,pending))
         fields=self._match_orphans(fields,pending)
         self._judge(pending)
+        self._flag_unverified_evidence(fields)
         warnings=[]
         if any(x.review_required for x in fields): warnings.append("One or more semantic comparisons require human review.")
         return ComparisonResult(run_id=run_id,policy_a_document_id=a.document_id,policy_b_document_id=b.document_id,fields=fields,warnings=warnings)

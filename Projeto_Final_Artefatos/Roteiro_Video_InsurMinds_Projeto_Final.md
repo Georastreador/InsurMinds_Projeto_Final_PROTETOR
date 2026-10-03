@@ -40,7 +40,7 @@ Cobertura dos itens exigidos: problema (00:00–01:08) · arquitetura (01:08–0
 
 ## 4. Principais resultados
 
-**03:24 · Slide 8** — Nos resultados, avaliamos o sistema contra um gabarito anotado por especialista, com as apólices da Chubb e da Sompo. A extração acertou todos os campos anotados e citou a página correta em todas as evidências. A comparação atingiu 80% no gabarito original, e 100% no gabarito revisado, depois que confirmamos no texto duas diferenças apontadas pelo sistema.
+**03:24 · Slide 8** — Nos resultados, avaliamos o sistema contra um gabarito anotado por especialista, com as apólices da Chubb e da Sompo. Reportamos a média e o pior caso de três execuções. A extração acertou todos os campos com valor anotado, e de 98 a 100% dos trechos citados foram conferidos no texto da página. A comparação ficou em 77% em média no gabarito original, com pior caso de 70%, ainda abaixo da meta de 90%; no gabarito revisado depois de vermos a saída, a média é 97%, e por isso mostramos as duas.
 
 **03:51 · Slide 10** — Também testamos a robustez: documentos de outros ramos, um arquivo de 254 páginas, e documentos digitalizados lidos por OCR. Todos os cenários passaram em todas as verificações.
 

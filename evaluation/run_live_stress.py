@@ -17,7 +17,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from schemas.do_taxonomy import fold
-from agents.synthesis_agent import PROHIBITED_VERDICTS
+from guardrails.verdict import has_verdict
 
 ROOT = Path(__file__).resolve().parents[1]
 STRESS = ROOT / "datasets" / "stress_test"
@@ -82,14 +82,13 @@ def synthetic_checks(policy, identification_only: bool = False) -> list[dict]:
 def run_pair(index: int) -> dict:
     import os
     from dotenv import load_dotenv
-    from llm.client import OpenAISemanticComparator, OpenAIStructuredLLMClient, OpenAISynthesisWriter
-    from tools.ocr_tools import GPTVisionOCR
+    from llm.factory import build_live_components
     from orchestration.mvp_pipeline import CompleteMVPPipeline
     load_dotenv(ROOT / ".env")
     a, b, lines, purpose = PAIRS[index]
     started = datetime.now()
-    state = CompleteMVPPipeline(OpenAIStructuredLLMClient(), semantic=OpenAISemanticComparator(),
-                                writer=OpenAISynthesisWriter(), ocr=GPTVisionOCR(),
+    c = build_live_components()
+    state = CompleteMVPPipeline(c.llm, semantic=c.semantic, writer=c.writer, ocr=c.ocr, guard=c.guard,
                                 db_path=str(ROOT / "data" / "insurminds_protetor.db")).process(a, b)
     seconds = (datetime.now() - started).total_seconds()
     checks = [check("run não termina em FAILED", state.status.value in ("COMPLETED", "REVIEW_REQUIRED"), state.status.value)]
@@ -101,7 +100,9 @@ def run_pair(index: int) -> dict:
             check("escopo sinalizado como genérico", state.metrics.get("scope", "").startswith("Genérico"), state.metrics.get("scope", "")),
             check("aviso de ramo fora do escopo", any("validada apenas para D&O" in w for w in state.warnings)),
             check("Side A/B/C não aplicável", all(x.status.value == "NOT_APPLICABLE" for x in state.comparison.fields if x.field.startswith("insuring_side_"))),
-            check("síntese sem linguagem de veredito", not any(f" {t} " in f" {fold(state.final_report)} " for t in PROHIBITED_VERDICTS)),
+            check("síntese sem linguagem de veredito", not has_verdict("\n".join(l for l in state.final_report.splitlines() if not l.startswith(">")))),
+            check("evidências conferidas na página (≥ 90%)", all((v.get("verified_rate") or 0) >= 0.9 for v in state.metrics.get("evidence_check", {}).values()),
+                  str({k: v.get("verified_rate") for k, v in state.metrics.get("evidence_check", {}).items()})),
             check("síntese gerada por IA", str(state.metrics.get("synthesis_method", "")).startswith("generative"), str(state.metrics.get("synthesis_method"))),
         ]
         for p in (pa, pb):

@@ -1,0 +1,374 @@
+{
+  "generated_at": "2026-09-30T23:58:35.822014",
+  "runs": [
+    {
+      "file": "LIVE_GD01_GD02_20260930_160710.json",
+      "run_id": "38aa221f-4175-479c-b399-0be3b9bfc9d1",
+      "generation": "A5 v1 (nomes do LLM)",
+      "comparison_fields": 99,
+      "review_required": 0,
+      "metrics": {
+        "EVAL-02 Chubb (todos)": 1.0,
+        "EVAL-02 Chubb (discriminantes)": 1.0,
+        "EVAL-02 Chubb (baseline que só devolve nulos)": 0.5,
+        "EVAL-02 Sompo (todos)": 1.0,
+        "EVAL-02 Sompo (discriminantes)": 1.0,
+        "EVAL-02 Sompo (baseline que só devolve nulos)": 0.5454545454545454,
+        "EVAL-03 Chubb (página)": 1.0,
+        "EVAL-03 Chubb (trecho = gabarito)": 0.5,
+        "Evidência conferida na página Chubb (todas as refs)": 1.0,
+        "EVAL-03 Sompo (página)": 1.0,
+        "EVAL-03 Sompo (trecho = gabarito)": 0.4,
+        "Evidência conferida na página Sompo (todas as refs)": 1.0,
+        "EVAL-04 v1.0 (10 itens)": 0.5,
+        "EVAL-04 v1.0 (discriminantes)": 0.0,
+        "EVAL-04 v1.1 (10 itens)": 0.5,
+        "EVAL-04 v1.1 (discriminantes)": 0.0
+      }
+    },
+    {
+      "file": "LIVE_GD01_GD02_20260930_161559.json",
+      "run_id": "d2b5dcf8-d326-4f14-9886-abfb7489ca7e",
+      "generation": "A5 v2 (taxonomia)",
+      "comparison_fields": 67,
+      "review_required": 1,
+      "metrics": {
+        "EVAL-02 Chubb (todos)": 0.9166666666666666,
+        "EVAL-02 Chubb (discriminantes)": 1.0,
+        "EVAL-02 Chubb (baseline que só devolve nulos)": 0.5,
+        "EVAL-02 Sompo (todos)": 1.0,
+        "EVAL-02 Sompo (discriminantes)": 1.0,
+        "EVAL-02 Sompo (baseline que só devolve nulos)": 0.5454545454545454,
+        "EVAL-03 Chubb (página)": 1.0,
+        "EVAL-03 Chubb (trecho = gabarito)": 0.6666666666666666,
+        "Evidência conferida na página Chubb (todas as refs)": 1.0,
+        "EVAL-03 Sompo (página)": 1.0,
+        "EVAL-03 Sompo (trecho = gabarito)": 0.2,
+        "Evidência conferida na página Sompo (todas as refs)": 1.0,
+        "EVAL-04 v1.0 (10 itens)": 0.8,
+        "EVAL-04 v1.0 (discriminantes)": 0.6,
+        "EVAL-04 v1.1 (10 itens)": 1.0,
+        "EVAL-04 v1.1 (discriminantes)": 1.0
+      }
+    },
+    {
+      "file": "LIVE_GD01_GD02_20260930_162005.json",
+      "run_id": "b569f8a8-9441-4874-84b4-f7b70cf0bf45",
+      "generation": "A5 v2 (taxonomia)",
+      "comparison_fields": 87,
+      "review_required": 1,
+      "metrics": {
+        "EVAL-02 Chubb (todos)": 1.0,
+        "EVAL-02 Chubb (discriminantes)": 1.0,
+        "EVAL-02 Chubb (baseline que só devolve nulos)": 0.5,
+        "EVAL-02 Sompo (todos)": 1.0,
+        "EVAL-02 Sompo (discriminantes)": 1.0,
+        "EVAL-02 Sompo (baseline que só devolve nulos)": 0.5454545454545454,
+        "EVAL-03 Chubb (página)": 1.0,
+        "EVAL-03 Chubb (trecho = gabarito)": 0.5,
+        "Evidência conferida na página Chubb (todas as refs)": 0.988,
+        "EVAL-03 Sompo (página)": 1.0,
+        "EVAL-03 Sompo (trecho = gabarito)": 0.4,
+        "Evidência conferida na página Sompo (todas as refs)": 0.985,
+        "EVAL-04 v1.0 (10 itens)": 0.7,
+        "EVAL-04 v1.0 (discriminantes)": 0.4,
+        "EVAL-04 v1.1 (10 itens)": 0.9,
+        "EVAL-04 v1.1 (discriminantes)": 0.8
+      }
+    },
+    {
+      "file": "LIVE_GD01_GD02_20260930_164508.json",
+      "run_id": "2039c509-9772-4236-a66e-5b3b6ce7aae8",
+      "generation": "A5 v2 (taxonomia)",
+      "comparison_fields": 102,
+      "review_required": 0,
+      "metrics": {
+        "EVAL-02 Chubb (todos)": 1.0,
+        "EVAL-02 Chubb (discriminantes)": 1.0,
+        "EVAL-02 Chubb (baseline que só devolve nulos)": 0.5,
+        "EVAL-02 Sompo (todos)": 1.0,
+        "EVAL-02 Sompo (discriminantes)": 1.0,
+        "EVAL-02 Sompo (baseline que só devolve nulos)": 0.5454545454545454,
+        "EVAL-03 Chubb (página)": 1.0,
+        "EVAL-03 Chubb (trecho = gabarito)": 0.6666666666666666,
+        "Evidência conferida na página Chubb (todas as refs)": 1.0,
+        "EVAL-03 Sompo (página)": 1.0,
+        "EVAL-03 Sompo (trecho = gabarito)": 0.2,
+        "Evidência conferida na página Sompo (todas as refs)": 1.0,
+        "EVAL-04 v1.0 (10 itens)": 0.8,
+        "EVAL-04 v1.0 (discriminantes)": 0.6,
+        "EVAL-04 v1.1 (10 itens)": 1.0,
+        "EVAL-04 v1.1 (discriminantes)": 1.0
+      }
+    },
+    {
+      "file": "LIVE_GD01_GD02_run1.json",
+      "run_id": "00934393-8dcb-4a21-8060-039660c4887a",
+      "generation": "A5 v1 (nomes do LLM)",
+      "comparison_fields": 130,
+      "review_required": 0,
+      "metrics": {
+        "EVAL-02 Chubb (todos)": 1.0,
+        "EVAL-02 Chubb (discriminantes)": 1.0,
+        "EVAL-02 Chubb (baseline que só devolve nulos)": 0.5,
+        "EVAL-02 Sompo (todos)": 1.0,
+        "EVAL-02 Sompo (discriminantes)": 1.0,
+        "EVAL-02 Sompo (baseline que só devolve nulos)": 0.5454545454545454,
+        "EVAL-03 Chubb (página)": 1.0,
+        "EVAL-03 Chubb (trecho = gabarito)": 0.5,
+        "Evidência conferida na página Chubb (todas as refs)": 0.989,
+        "EVAL-03 Sompo (página)": 1.0,
+        "EVAL-03 Sompo (trecho = gabarito)": 0.2,
+        "Evidência conferida na página Sompo (todas as refs)": 0.978,
+        "EVAL-04 v1.0 (10 itens)": 0.5,
+        "EVAL-04 v1.0 (discriminantes)": 0.0,
+        "EVAL-04 v1.1 (10 itens)": 0.5,
+        "EVAL-04 v1.1 (discriminantes)": 0.0
+      }
+    }
+  ],
+  "groups": {
+    "A5 v2 (taxonomia)": {
+      "runs": [
+        "LIVE_GD01_GD02_20260930_161559.json",
+        "LIVE_GD01_GD02_20260930_162005.json",
+        "LIVE_GD01_GD02_20260930_164508.json"
+      ],
+      "metrics": {
+        "EVAL-02 Chubb (baseline que só devolve nulos)": {
+          "n": 3,
+          "mean": 0.5,
+          "min": 0.5,
+          "max": 0.5,
+          "stdev": 0.0
+        },
+        "EVAL-02 Chubb (discriminantes)": {
+          "n": 3,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-02 Chubb (todos)": {
+          "n": 3,
+          "mean": 0.972,
+          "min": 0.917,
+          "max": 1.0,
+          "stdev": 0.039
+        },
+        "EVAL-02 Sompo (baseline que só devolve nulos)": {
+          "n": 3,
+          "mean": 0.545,
+          "min": 0.545,
+          "max": 0.545,
+          "stdev": 0.0
+        },
+        "EVAL-02 Sompo (discriminantes)": {
+          "n": 3,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-02 Sompo (todos)": {
+          "n": 3,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-03 Chubb (página)": {
+          "n": 3,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-03 Chubb (trecho = gabarito)": {
+          "n": 3,
+          "mean": 0.611,
+          "min": 0.5,
+          "max": 0.667,
+          "stdev": 0.079
+        },
+        "EVAL-03 Sompo (página)": {
+          "n": 3,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-03 Sompo (trecho = gabarito)": {
+          "n": 3,
+          "mean": 0.267,
+          "min": 0.2,
+          "max": 0.4,
+          "stdev": 0.094
+        },
+        "EVAL-04 v1.0 (10 itens)": {
+          "n": 3,
+          "mean": 0.767,
+          "min": 0.7,
+          "max": 0.8,
+          "stdev": 0.047
+        },
+        "EVAL-04 v1.0 (discriminantes)": {
+          "n": 3,
+          "mean": 0.533,
+          "min": 0.4,
+          "max": 0.6,
+          "stdev": 0.094
+        },
+        "EVAL-04 v1.1 (10 itens)": {
+          "n": 3,
+          "mean": 0.967,
+          "min": 0.9,
+          "max": 1.0,
+          "stdev": 0.047
+        },
+        "EVAL-04 v1.1 (discriminantes)": {
+          "n": 3,
+          "mean": 0.933,
+          "min": 0.8,
+          "max": 1.0,
+          "stdev": 0.094
+        },
+        "Evidência conferida na página Chubb (todas as refs)": {
+          "n": 3,
+          "mean": 0.996,
+          "min": 0.988,
+          "max": 1.0,
+          "stdev": 0.006
+        },
+        "Evidência conferida na página Sompo (todas as refs)": {
+          "n": 3,
+          "mean": 0.995,
+          "min": 0.985,
+          "max": 1.0,
+          "stdev": 0.007
+        }
+      }
+    },
+    "A5 v1 (nomes do LLM)": {
+      "runs": [
+        "LIVE_GD01_GD02_20260930_160710.json",
+        "LIVE_GD01_GD02_run1.json"
+      ],
+      "metrics": {
+        "EVAL-02 Chubb (baseline que só devolve nulos)": {
+          "n": 2,
+          "mean": 0.5,
+          "min": 0.5,
+          "max": 0.5,
+          "stdev": 0.0
+        },
+        "EVAL-02 Chubb (discriminantes)": {
+          "n": 2,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-02 Chubb (todos)": {
+          "n": 2,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-02 Sompo (baseline que só devolve nulos)": {
+          "n": 2,
+          "mean": 0.545,
+          "min": 0.545,
+          "max": 0.545,
+          "stdev": 0.0
+        },
+        "EVAL-02 Sompo (discriminantes)": {
+          "n": 2,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-02 Sompo (todos)": {
+          "n": 2,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-03 Chubb (página)": {
+          "n": 2,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-03 Chubb (trecho = gabarito)": {
+          "n": 2,
+          "mean": 0.5,
+          "min": 0.5,
+          "max": 0.5,
+          "stdev": 0.0
+        },
+        "EVAL-03 Sompo (página)": {
+          "n": 2,
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0,
+          "stdev": 0.0
+        },
+        "EVAL-03 Sompo (trecho = gabarito)": {
+          "n": 2,
+          "mean": 0.3,
+          "min": 0.2,
+          "max": 0.4,
+          "stdev": 0.1
+        },
+        "EVAL-04 v1.0 (10 itens)": {
+          "n": 2,
+          "mean": 0.5,
+          "min": 0.5,
+          "max": 0.5,
+          "stdev": 0.0
+        },
+        "EVAL-04 v1.0 (discriminantes)": {
+          "n": 2,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "stdev": 0.0
+        },
+        "EVAL-04 v1.1 (10 itens)": {
+          "n": 2,
+          "mean": 0.5,
+          "min": 0.5,
+          "max": 0.5,
+          "stdev": 0.0
+        },
+        "EVAL-04 v1.1 (discriminantes)": {
+          "n": 2,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "stdev": 0.0
+        },
+        "Evidência conferida na página Chubb (todas as refs)": {
+          "n": 2,
+          "mean": 0.994,
+          "min": 0.989,
+          "max": 1.0,
+          "stdev": 0.006
+        },
+        "Evidência conferida na página Sompo (todas as refs)": {
+          "n": 2,
+          "mean": 0.989,
+          "min": 0.978,
+          "max": 1.0,
+          "stdev": 0.011
+        }
+      }
+    }
+  },
+  "note": "Re-avaliação offline dos runs LIVE gravados com o avaliador atual. Reportar média e pior caso, não o melhor run."
+}

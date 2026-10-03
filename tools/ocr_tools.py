@@ -62,15 +62,12 @@ class GPTVisionOCR:
         "required": ["pages"], "additionalProperties": False,
     }
 
+    ledger = None  # llm.usage.UsageLedger, attached by the Harness
+
     def __init__(self, *, model: str | None = None, api_key: str | None = None, client: Any = None):
-        if client is None:
-            from openai import OpenAI
-            key = api_key or os.getenv("OPENAI_API_KEY")
-            if not key:
-                raise RuntimeError("OPENAI_API_KEY is not configured.")
-            client = OpenAI(api_key=key)
-        self.model = model or os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
-        self._client = client
+        from llm.provider import make_openai_client, model_name
+        self._client = client or make_openai_client(api_key)
+        self.model = model_name(model)
 
     def transcribe(self, images: list[tuple[int, bytes]]) -> dict[int, str]:
         result: dict[int, str] = {}
@@ -84,6 +81,8 @@ class GPTVisionOCR:
                 model=self.model, input=[{"role": "user", "content": content}],
                 text={"format": {"type": "json_schema", "name": "OCRPages", "schema": self.SCHEMA, "strict": True}},
             )
+            from llm.usage import record
+            record(self.ledger, "A2_ocr", response)
             wanted = {n for n, _ in batch}
             for page in json.loads(response.output_text)["pages"]:
                 if page["page"] in wanted:

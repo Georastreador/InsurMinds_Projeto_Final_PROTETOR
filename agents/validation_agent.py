@@ -65,8 +65,48 @@ class ValidationAgent:
                     f"A4 guardrail: {field} continha definição genérica ('{value[:80]}'), não um valor individualizado; mantido como não identificado."]
         return candidate
 
+    # reporting_period = period AFTER expiry to notify claims. Retroactivity is the period BEFORE
+    # inception. v1.2 reference run (Sompo) stored retroactivity there and A5 compared it with
+    # Chubb's "prazo complementar" as if they were the same concept.
+    _RETRO = re.compile(r"retroativ|retroactiv|data retroa", re.IGNORECASE)
+    _POST_EXPIRY = re.compile(
+        r"prazo\s+(?:complementar|adicional|suplementar)|per[ií]odo\s+(?:complementar|adicional|suplementar)|"
+        r"extended\s+reporting|discovery\s+period|ap[oó]s\s+o\s+(?:t[eé]rmino|fim|cancelamento)|"
+        r"ap[oó]s\s+a\s+(?:expira|extin|rescis)", re.IGNORECASE)
+
+    @classmethod
+    def _text_of(cls, item: Any) -> str:
+        if not isinstance(item, dict):
+            return ""
+        return " ".join(str(item.get(k) or "") for k in ("name", "title", "description", "category"))
+
+    @classmethod
+    def _fix_reporting_period(cls, candidate: dict[str, Any]) -> dict[str, Any]:
+        warnings = list(candidate.get("warnings") or [])
+        rp = candidate.get("reporting_period")
+        if isinstance(rp, dict):
+            text = str(rp.get("description") or "")
+            if cls._RETRO.search(text) and not cls._POST_EXPIRY.search(text):
+                candidate["reporting_period"] = rp = None
+                warnings.append("A4 guardrail: reporting_period descrevia retroatividade (período anterior à vigência), "
+                                "não prazo complementar; campo esvaziado.")
+        if not rp:
+            for group in ("extensions", "clauses", "coverages"):
+                match = next((x for x in candidate.get(group) or []
+                              if isinstance(x, dict) and (x.get("category") == "prazo_complementar"
+                                                          or cls._POST_EXPIRY.search(cls._text_of(x)))), None)
+                if match:
+                    desc = " — ".join(str(match[k]) for k in ("name", "description") if match.get(k))
+                    candidate["reporting_period"] = {"duration_days": None, "description": desc,
+                                                     "source_reference": match.get("source_reference")}
+                    warnings.append(f"A4 guardrail: reporting_period preenchido a partir de '{match.get('name')}' ({group}).")
+                    break
+        candidate["warnings"] = warnings
+        return candidate
+
     def process(self, candidate: dict[str, Any]) -> PolicySchema:
         normalized = self._drop_role_definitions(self._normalize_dates(self._clean_text(candidate)))
+        normalized = self._fix_reporting_period(normalized)
         try:
             return PolicySchema.model_validate(normalized)
         except ValidationError as exc:

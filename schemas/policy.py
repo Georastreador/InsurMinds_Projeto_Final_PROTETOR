@@ -23,6 +23,9 @@ class SourceReference(BaseModel):
     page: Optional[int] = Field(default=None, ge=1)
     section: Optional[str] = None
     excerpt: Optional[str] = None
+    # Filled by the Harness (tools/evidence_check.py), never requested from the LLM.
+    verified: Optional[bool] = None
+    verified_page: Optional[int] = Field(default=None, ge=1)
 
 
 class Money(BaseModel):

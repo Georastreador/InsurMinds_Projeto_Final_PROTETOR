@@ -1,21 +1,22 @@
 {
-  "release": "InsurMinds_PROTETOR v1.2",
-  "date": "2026-09-30",
-  "architecture": "Harness -> A1 -> A2 (PyMuPDF + OCR GPT) -> A3 (Structured Outputs estrito) -> A4 (retry com feedback) -> A5 (taxonomia D&O + juiz LLM) -> A6 (síntese generativa) ; Consulta sob demanda",
+  "release": "InsurMinds_PROTETOR v1.3",
+  "date": "2026-10-01",
+  "architecture": "Harness (workflow orquestrado) -> [A1 -> A2 (PyMuPDF + OCR GPT) -> A3 (Structured Outputs estrito) -> A4 (retry com feedback) -> verificação de evidência] em paralelo para A e B -> A5 (taxonomia D&O + juiz LLM) -> A6 (síntese generativa + guardrail 2 camadas) ; Consulta sob demanda",
   "new_agents": 0,
   "agents_modified": 0,
   "provider_adapter_added": "OpenAIStructuredLLMClient",
   "default_model": "gpt-5.6-luna",
   "api_key_storage": "OPENAI_API_KEY environment variable",
   "structured_output": "PolicySchema (Pydantic)",
-  "tests": "98 passed",
+  "tests": "145 passed",
   "live_api_call_executed": true,
   "llm_touchpoints": [
     "OCR multimodal (A2)",
     "extração estruturada (A3)",
     "pareamento e julgamento semântico (A5)",
     "síntese executiva (A6)",
-    "consulta com citações"
+    "consulta com citações",
+    "classificador anti-veredito (guardrail, camada 2)"
   ],
-  "evaluation": "evaluation/golden_dataset/EVALUATION_STATUS_v1.1.json"
+  "evaluation": "evaluation/aggregate_runs.py (média e pior caso) + evaluation/golden_dataset/EVALUATION_STATUS_v1.1.json (histórico)"
 }
